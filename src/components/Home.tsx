@@ -6,8 +6,33 @@ const Home: React.FC = () => {
   const [formCardsCount, setFormCardsCount] = useState(1);
 
   // Function to handle the button click
-  const addFormCard = () => {
-    setFormCardsCount(formCardsCount + 1);
+  const addFormCard = async () => {
+    try {
+      // Send a POST request to your backend endpoint
+      const response = await fetch('http://localhost:5001/api/forms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // You might want to send specific data in the body
+        body: JSON.stringify({ formName: 'Untitled Form' }),
+      });
+
+      console.log(response);
+  
+      if (response.ok) {
+        // If the form was added successfully, update the state
+        console.log('Form added successfully');
+        console.log(response.ok);
+        setFormCardsCount(formCardsCount + 1);
+      } else {
+        // Handle any errors returned from the server
+        console.error('Failed to add the form');
+      }
+    } catch (error) {
+      // Handle any network errors
+      console.error('Network error when trying to add the form:', error);
+    }
   };
 
   return (
