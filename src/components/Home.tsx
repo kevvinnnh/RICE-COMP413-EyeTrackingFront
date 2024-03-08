@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import FormCard from './FormCard';
+import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
   // Initialize state to hold the number of form cards
   const [formCardsCount, setFormCardsCount] = useState(1);
+  const navigate = useNavigate();
 
-  // Function to handle the button click
+  // Function to handle the button click to add a new form card
   const addFormCard = async () => {
     try {
       // Send a POST request to your backend endpoint
@@ -35,6 +37,11 @@ const Home: React.FC = () => {
     }
   };
 
+  // Function to handle the button click to navigate to the prepopulated form
+  const navigateToPrepopulatedForm = () => {
+    navigate('/prepopulated-form'); // Use navigate to change route
+  };
+
   return (
     <>
       <nav className="flex justify-between items-center shadow-md p-2 mb-2">
@@ -56,6 +63,15 @@ const Home: React.FC = () => {
         >
           <span className='pr-2'>+</span>Create a new form
         </button>
+        {/*ADDED STARTING HERE*/}
+        {/* Button to go to the prepopulated form */}
+        <button
+          onClick={navigateToPrepopulatedForm}
+          className="mt-4 ml-4 bg-gradient-to-tr from-green-600 to-green-400 text-white font-bold text-lg py-2 px-4 rounded transition duration-300 ease-in-out transform hover:translate-x-1 hover:shadow-lg"
+        >
+          Start Prepopulated Survey
+        </button>
+        {/*ADDED ENDING HERE*/}
         <div className="pt-4 pb-4 mb-4">
           <div className="grid grid-cols-3 gap-4">
             {/* Generate form cards based on state */}
