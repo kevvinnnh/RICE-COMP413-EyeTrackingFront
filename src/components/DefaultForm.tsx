@@ -22,37 +22,43 @@ const PrepopulatedForm = () => {
         // For example, POST to backend
         try {
             const response = await fetch(`${HOSTNAME}/api/responses`, {
-                
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 // Add 
-                body: JSON.stringify(responses),
+                body: JSON.stringify({
+                    ...responses, 
+                    role: selectedRole, 
+                    experienceLevel: selectedExperience, 
+                    age: selectedAge, 
+                    gender: selectedGender, 
+                    vision: selectedVision
+                })
             });
+            console.log("Response from server:", response);
         
-        if (response.ok) {
-            console.log('Responses submitted successfully');
-            // Navigate back to the home page or to a success page
-            navigate('/success-page');
-        } else {
-            console.error('Failed to submit responses');
-        }
+            if (response.ok) {
+                console.log('Responses submitted successfully');
+                // Navigate back to the home page or to a success page
+                navigate('/success-page');
+            } else {
+                console.error('Failed to submit responses');
+            }
         } catch (error) {
-        console.error('Network error when trying to submit responses:', error);
+            console.error('Network error when trying to submit responses:', error);
         }
 
     // Handlers for updating the state based on form inputs, etc.
     return (
         <form onSubmit={handleSubmit}>
         {/* Your form inputs and labels go here */}
-        {/* ... */}
         <button type="submit" className="...">
             Submit Responses
         </button>
         </form>
-    );
-    };
+    )};
+
     return (
         <div className="max-w-4xl mx-auto p-4">
         <h1 className="text-2xl font-semibold mb-4">Welcome to our survey</h1>
@@ -64,7 +70,11 @@ const PrepopulatedForm = () => {
                     <select 
                         name="role" 
                         className="p-2.5 text-sm border-[0px] bg-gray-100 rounded-md w-full"
-                        onChange={(e) => setSelectedRole(e.target.value)}
+                        value={selectedRole}
+                        onChange={(e) => {
+                            setSelectedRole(e.target.value)
+                            setResponses({...responses, role: e.target.value});
+                        }}
                     >
                     <option value=""></option> 
                     <option value="physician">Physician</option>
@@ -80,7 +90,11 @@ const PrepopulatedForm = () => {
                     <select 
                         name="experienceLevel" 
                         className="p-2.5 text-sm border-[0px] bg-gray-100 rounded-md w-full"
-                        onChange={(e) => setSelectedExperience(e.target.value)}
+                        value={selectedExperience}
+                        onChange={(e) => {
+                            setSelectedExperience(e.target.value)
+                            setResponses({...responses, experienceLevel: e.target.value});
+                        }}
                     >
                     <option value=""></option> 
                     <option value="beginner">Beginner</option>
@@ -101,7 +115,11 @@ const PrepopulatedForm = () => {
                         name="age" 
                         className="form-input mt-1 block w-full" 
                         placeholder="Enter your age"
-                        onChange={(e) => setSelectedAge(e.target.value)}
+                        value={selectedAge}
+                        onChange={(e) => {
+                            setSelectedAge(e.target.value);
+                            setResponses({...responses, age: e.target.value});
+                        }}
                     />
                 </label>
             </div>
@@ -113,7 +131,11 @@ const PrepopulatedForm = () => {
                     <select 
                         name="gender" 
                         className="form-select mt-1 block w-full"
-                        onChange={(e) => setSelectedGender(e.target.value)}
+                        value={selectedGender}
+                        onChange={(e) => {
+                            setSelectedGender(e.target.value);
+                            setResponses({...responses, gender: e.target.value});
+                        }}
                     >
                     <option value=""></option> 
                     <option value="male">Male</option>
@@ -131,7 +153,11 @@ const PrepopulatedForm = () => {
                     <select 
                         name="vision" 
                         className="form-select mt-1 block w-full"
-                        onChange={(e) => setSelectedVision(e.target.value)}
+                        value={selectedVision}
+                        onChange={(e) => {
+                            setSelectedVision(e.target.value);
+                            setResponses({...responses, vision: e.target.value});
+                        }}
                     >
                     <option value=""></option> 
                     <option value="yes">Yes</option>
