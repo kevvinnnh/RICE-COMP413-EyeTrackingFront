@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import EditForm from './components/EditForm';
-import PrepopulatedForm from './components/PrepopulatedForm';
+import PrepopulatedForm from './components/DefaultForm';
 
 
 function App() {
