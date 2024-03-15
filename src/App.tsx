@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import EditForm from './components/EditForm';
-import PrepopulatedForm from './components/DefaultForm';
-
+import DefaultForm from './components/DefaultForm';
+import SuccessPage from './components/SuccessPage';
 
 function App() {
   return (
@@ -11,7 +11,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/edit/:formID" element={<EditForm />} />
         {/* ADDED the line below*/}
-        <Route path="/prepopulated-form" element={<PrepopulatedForm />} />
+        <Route path="/default-form" element={<DefaultForm />} />
+        <Route path="/success" element={<SuccessPage />} />
       </Routes>
     </Router>
   );

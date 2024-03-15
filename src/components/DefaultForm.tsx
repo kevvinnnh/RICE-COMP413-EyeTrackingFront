@@ -1,10 +1,10 @@
-// PrepopulatedForm.tsx
+// DefaultForm.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HOSTNAME } from '../HostName.tsx'
 import {DEFAULT_ANSWERS} from './DefaultFormQuestion.tsx'
 
-const PrepopulatedForm = () => {
+const DefaultForm = () => {
     // Assume there's a state to manage form responses, etc.
     const [responses, setResponses] = useState<any>({});
     const [selectedRole, setSelectedRole] = useState('');
@@ -13,6 +13,7 @@ const PrepopulatedForm = () => {
     const [selectedGender, setSelectedGender] = useState('');
     const [selectedVision, setSelectedVision] = useState('');
 
+    const [submissionStatus, setSubmissionStatus] = useState('');
     const navigate = useNavigate();
 
     // Function to handle form submission
@@ -41,12 +42,15 @@ const PrepopulatedForm = () => {
             if (response.ok) {
                 console.log('Responses submitted successfully');
                 // Navigate back to the home page or to a success page
-                navigate('/success-page');
+                navigate('/success');
+                setSubmissionStatus('success');
             } else {
                 console.error('Failed to submit responses');
+                setSubmissionStatus('failure');
             }
         } catch (error) {
             console.error('Network error when trying to submit responses:', error);
+            setSubmissionStatus('failure');
         }
 
     // Handlers for updating the state based on form inputs, etc.
@@ -73,7 +77,6 @@ const PrepopulatedForm = () => {
                         value={selectedRole}
                         onChange={(e) => {
                             setSelectedRole(e.target.value)
-                            setResponses({...responses, role: e.target.value});
                         }}
                     >
                     <option value=""></option> 
@@ -93,7 +96,6 @@ const PrepopulatedForm = () => {
                         value={selectedExperience}
                         onChange={(e) => {
                             setSelectedExperience(e.target.value)
-                            setResponses({...responses, experienceLevel: e.target.value});
                         }}
                     >
                     <option value=""></option> 
@@ -117,8 +119,7 @@ const PrepopulatedForm = () => {
                         placeholder="Enter your age"
                         value={selectedAge}
                         onChange={(e) => {
-                            setSelectedAge(e.target.value);
-                            setResponses({...responses, age: e.target.value});
+                            setSelectedAge(e.target.value)
                         }}
                     />
                 </label>
@@ -133,8 +134,7 @@ const PrepopulatedForm = () => {
                         className="form-select mt-1 block w-full"
                         value={selectedGender}
                         onChange={(e) => {
-                            setSelectedGender(e.target.value);
-                            setResponses({...responses, gender: e.target.value});
+                            setSelectedGender(e.target.value)
                         }}
                     >
                     <option value=""></option> 
@@ -155,8 +155,7 @@ const PrepopulatedForm = () => {
                         className="form-select mt-1 block w-full"
                         value={selectedVision}
                         onChange={(e) => {
-                            setSelectedVision(e.target.value);
-                            setResponses({...responses, vision: e.target.value});
+                            setSelectedVision(e.target.value)
                         }}
                     >
                     <option value=""></option> 
@@ -210,4 +209,4 @@ const PrepopulatedForm = () => {
 );
 };
 
-export default PrepopulatedForm;
+export default DefaultForm;
