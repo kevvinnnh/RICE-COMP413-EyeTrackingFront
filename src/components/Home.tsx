@@ -75,6 +75,42 @@ const Home: React.FC = () => {
         <div className="pt-4 pb-4 mb-4">
           <div className="grid grid-cols-3 gap-4">
             {/* Generate form cards based on state */}
+
+            {/* Skin Lesion Diagnosis Questions
+            {DEFAULT_ANSWERS.map((form,idx) => (
+            <div className="bg-white border-[1px] rounded-lg p-2 flex flex-col w-full mb-4">
+                <label className="text-sm font-medium text-gray-700">
+                    {idx+1}. What is the diagnosis for this skin lesion on the individual’s <em>{question.position}</em>?
+                </label>
+                <img
+                    // Replace with your path to image file 
+                    src={question.image}
+                    className="my-4"
+                />
+                <div className="flex flex-col">
+                {question.answer_choices.map((answer,index) => (
+                    <label className="inline-flex items-center">
+                    <input 
+                        type="radio" 
+                        name={idx.toString()} 
+                        value={answer} 
+                        className="form-radio" 
+                        onChange={() => {
+                            // all_answers is a dictionary
+                            const all_answers = responses
+                            //Should change to number not string eventually 
+                            all_answers[idx] = answer
+                            setResponses(all_answers)
+                        }}
+                    />
+                    <span className="ml-2">{answer}</span>
+                    </label>
+                ))
+                }
+                </div>
+            </div>
+            ))
+            } */}
             {Array.from({ length: formCardsCount }, (_, index) => (
               <FormCard key={index} formID={"Untitled Form"} />
             ))}
