@@ -1,26 +1,17 @@
 export const TEST_FORMS = [
     {
-        "form_name": "Form 1",
-        "form_id": "1",
-        "image": "public/default_survey_images/ISIC_0034539_1.jpg",
-        "position": "back",
-        "answer_choices": ["Benign keratosis-like lesions","Dermatofibroma","Melanoma","Melanocytic nevi"]
+        "formName": "Form 1",
+        "formID": "1"
     },
 
     {
-        "form_name": "Form 2",
-        "form_id": "2",
-        "image": "public/default_survey_images/ISIC_0034525_2.jpg",
-        "position": "abdomen",
-        "answer_choices": ["Melanocytic nevi","Benign keratosis-like lesions","Vascular lesions","Basal cell carcinoma"]
+        "formName": "Form 2",
+        "formID": "2"
     },
 
     {
-        "form_name": "Form 3",
-        "form_id": "3",
-        "image": "public/default_survey_images/ISIC_0034526_3.jpg",
-        "position": "back",
-        "answer_choices": ["Benign keratosis-like lesions","Basal cell carcinoma","Vascular lesions","Dermatofibroma"]
+        "formName": "Form 3",
+        "formID": "3"
     }
 
 ]

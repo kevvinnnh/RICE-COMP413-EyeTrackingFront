@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import FormCard from './FormCard';
 import { useNavigate } from 'react-router-dom';
+import { TEST_FORMS } from './TestForms';
 
 const Home: React.FC = () => {
   // Initialize state to hold the number of form cards
@@ -18,19 +19,28 @@ const Home: React.FC = () => {
         },
         // You might want to send specific data in the body
         body: JSON.stringify({ formName: 'Untitled Form' }),
-      });
+      }).then(response=>{
+         // TODO: Make sure that response contains the formID
+        console.log(response);
+    
+        if (response.ok) {
+          // If the form was added successfully, update the state
+          console.log('Form added successfully');
+          console.log(response.ok);
+          setFormCardsCount(formCardsCount + 1);
+        } else {
+          // Handle any errors returned from the server
+          console.error('Failed to add the form');
+        } return response
+        }
+      ).then(response=>{
+        const data = response.json()
+        return data
+      }).then(data=>{
+        console.log(data)
+        navigate(`/edit/${data.inserted_id}`);
+      })
 
-      console.log(response);
-  
-      if (response.ok) {
-        // If the form was added successfully, update the state
-        console.log('Form added successfully');
-        console.log(response.ok);
-        setFormCardsCount(formCardsCount + 1);
-      } else {
-        // Handle any errors returned from the server
-        console.error('Failed to add the form');
-      }
     } catch (error) {
       // Handle any network errors
       console.error('Network error when trying to add the form:', error);
@@ -75,45 +85,13 @@ const Home: React.FC = () => {
         <div className="pt-4 pb-4 mb-4">
           <div className="grid grid-cols-3 gap-4">
             {/* Generate form cards based on state */}
-
-            {/* Skin Lesion Diagnosis Questions
-            {DEFAULT_ANSWERS.map((form,idx) => (
-            <div className="bg-white border-[1px] rounded-lg p-2 flex flex-col w-full mb-4">
-                <label className="text-sm font-medium text-gray-700">
-                    {idx+1}. What is the diagnosis for this skin lesion on the individual’s <em>{question.position}</em>?
-                </label>
-                <img
-                    // Replace with your path to image file 
-                    src={question.image}
-                    className="my-4"
-                />
-                <div className="flex flex-col">
-                {question.answer_choices.map((answer,index) => (
-                    <label className="inline-flex items-center">
-                    <input 
-                        type="radio" 
-                        name={idx.toString()} 
-                        value={answer} 
-                        className="form-radio" 
-                        onChange={() => {
-                            // all_answers is a dictionary
-                            const all_answers = responses
-                            //Should change to number not string eventually 
-                            all_answers[idx] = answer
-                            setResponses(all_answers)
-                        }}
-                    />
-                    <span className="ml-2">{answer}</span>
-                    </label>
-                ))
-                }
-                </div>
-            </div>
+            {TEST_FORMS.map((form,idx) => (
+               <FormCard key={idx} formID={form.formID} formName={form.formName} />
             ))
-            } */}
-            {Array.from({ length: formCardsCount }, (_, index) => (
+            }
+            {/* {Array.from({ length: formCardsCount }, (_, index) => (
               <FormCard key={index} formID={"Untitled Form"} />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>

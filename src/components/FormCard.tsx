@@ -4,14 +4,14 @@ import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-const FormCard: React.FC<{ formID: string }> = ({ formID }) => {
+const FormCard: React.FC<{ formID: string, formName: string }> = ({ formID, formName }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/edit/${formID}`);
   };
 
-  const formTitle = formID || 'Untitled Form';
+  const formTitle = formName || 'Untitled Form';
 
   return (
     <div
