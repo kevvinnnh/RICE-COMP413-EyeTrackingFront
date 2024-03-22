@@ -1,18 +1,51 @@
-import { useState } from 'react';
 import FormCard from './FormCard';
 import { useNavigate } from 'react-router-dom';
 import { TEST_FORMS } from './TestForms';
+import { useState, useEffect } from 'react';
+
+// Define a type for the form objects
+interface Form {
+    _id: {
+      $oid: string;
+    };
+    dateCreated: string;
+    formID: string;
+    formName?: string;
+    formTitle?: string;
+  }
 
 const Home: React.FC = () => {
   // Initialize state to hold the number of form cards
   const [formCardsCount, setFormCardsCount] = useState(1);
   const navigate = useNavigate();
 
+  // State to hold the fetched forms
+  const [forms, setForms] = useState<Form[]>([]);
+
+  // Fetch forms from the backend when the component mounts
+  useEffect(() => {
+    const fetchForms = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5001/api/forms');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setForms(data.forms); // Update the state with the fetched forms
+      } catch (error) {
+        console.error('Failed to fetch forms:', error);
+      }
+    };
+
+    fetchForms();
+  }, []); // The empty array ensures this effect runs only once after the initial render
+
+
   // Function to handle the button click to add a new form card
   const addFormCard = async () => {
     try {
       // Send a POST request to your backend endpoint
-      const response = await fetch('http://localhost:5001/api/forms', {
+      const response = await fetch('http://127.0.0.1:5001/api/forms', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,13 +118,10 @@ const Home: React.FC = () => {
         <div className="pt-4 pb-4 mb-4">
           <div className="grid grid-cols-3 gap-4">
             {/* Generate form cards based on state */}
-            {TEST_FORMS.map((form,idx) => (
-               <FormCard key={idx} formID={form.formID} formName={form.formName} />
+            {forms.map((form) => (
+               <FormCard key={form._id.$oid} formID={form.formID} formName={String(form.formName || form.formTitle)} />
             ))
             }
-            {/* {Array.from({ length: formCardsCount }, (_, index) => (
-              <FormCard key={index} formID={"Untitled Form"} />
-            ))} */}
           </div>
         </div>
       </div>
