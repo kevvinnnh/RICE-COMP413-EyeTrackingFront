@@ -11,7 +11,7 @@ const FormCard: React.FC<{ formID: string, formName: string }> = ({ formID, form
     navigate(`/edit/${formID}`);
   };
 
-  const formTitle = formName || 'Untitled Form';
+  const formTitle = formName || 'No Title';
 
   return (
     <div
@@ -23,14 +23,18 @@ const FormCard: React.FC<{ formID: string, formName: string }> = ({ formID, form
       "
     >
       {/* Content of the form card */}
-      <div>
+      <div className='p-2'>
         {/* <p>Title</p> */}
         {/* Other content */}
+        <label className='text-sm opacity-25'>
+            {formID}
+        </label>
       </div>
       {/* Footer with title */}
       <div className="bg-white border-t-[1px] p-2 rounded-b-[3.5px]">
-        <p className="text-md text-gray-700">
-          {formTitle}
+        <p className="text-md">
+            {formTitle}
+          {/* {`${formTitle} (${formID})`} */}
         </p>
       </div>
     </div>

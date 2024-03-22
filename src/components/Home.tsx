@@ -70,8 +70,10 @@ const Home: React.FC = () => {
         const data = response.json()
         return data
       }).then(data=>{
-        console.log(data)
-        navigate(`/edit/${data.inserted_id}`);
+        // console.log(data)
+        console.log("data:", data)
+        console.log("data ID:", data.insertedId)
+        navigate(`/edit/${data.insertedId}`);
       })
 
     } catch (error) {
@@ -119,7 +121,8 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-3 gap-4">
             {/* Generate form cards based on state */}
             {forms.map((form) => (
-               <FormCard key={form._id.$oid} formID={form.formID} formName={String(form.formName || form.formTitle)} />
+                console.log("FORM:", form),
+               <FormCard key={form._id.$oid} formID={form._id.$oid} formName={String(form.formName || form.formTitle)} />
             ))
             }
           </div>
