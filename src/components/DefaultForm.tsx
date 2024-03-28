@@ -176,6 +176,15 @@ const DefaultForm = () => {
                     src={question.image}
                     className="my-4"
                 />
+                {/* Button to navigate to EyeTracking, placed after each image */}
+                <button
+                    type="button"
+                    className="mb-4 bg-gradient-to-tr from-green-600 to-green-400 text-white font-bold text-lg py-2 px-4 rounded transition duration-300 ease-in-out"
+                    onClick={() => navigate('/eyetracking', {state:{image:question.image}})}
+                >
+                    Go to EyeTracking
+                </button>
+
                 <div className="flex flex-col">
                 {question.answer_choices.map((answer,index) => (
                     <label className="inline-flex items-center">
@@ -200,6 +209,7 @@ const DefaultForm = () => {
             </div>
             ))
             }
+
 
             <button type="submit" className="mt-4 bg-gradient-to-tr from-blue-600 to-blue-400 text-white font-bold text-lg py-2 px-4 rounded transition duration-300 ease-in-out transform hover:translate-x-1 hover:shadow-lg">
                 Submit Responses
