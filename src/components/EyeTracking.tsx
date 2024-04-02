@@ -10,6 +10,17 @@ const EyeTracking = () => {
     const [scriptLoaded, setScriptLoaded] = useState(false);
     const [showImage,setShowImage] = useState(false)
 
+    // Handles the full screen skin lesion image 
+    const fullScreenStyle = {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        objectFit: 'cover',
+        zIndex: -1
+    };
+
     // Handles the loading of the Webgazer script
     const handleScriptLoad = () => {
         setScriptLoaded(true);
@@ -41,6 +52,7 @@ const EyeTracking = () => {
          // Cleanup function
             if (window.webgazer) {
                 window.webgazer.end(); // Assuming webgazer provides a method to stop tracking
+                window.webgazer.stopVideo();
                 console.log("Eye tracking stopped");
             }
         navigate('/default-form'); 
@@ -55,7 +67,9 @@ const EyeTracking = () => {
             {showImage&&<img
                 // Replace with your path to image file 
                 src={location.state.image}
-                className="my-4"
+                // className="my-4"
+                style={fullScreenStyle}
+                
         />}
             {/* Button to navigate back to DefaultForm */}
             <button 

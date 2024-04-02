@@ -171,11 +171,11 @@ const DefaultForm = () => {
                 <label className="text-sm font-medium text-gray-700">
                     {idx+1}. What is the diagnosis for this skin lesion on the individual’s <em>{question.position}</em>?
                 </label>
-                <img
+                {/* <img
                     // Replace with your path to image file 
                     src={question.image}
                     className="my-4"
-                />
+                /> */}
                 {/* Button to navigate to EyeTracking, placed after each image */}
                 <button
                     type="button"
