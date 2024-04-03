@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import Script from 'react-load-script';
 import React, { useState} from 'react';
 import { useLocation } from 'react-router-dom';
+import { HOSTNAME } from '../HostName.tsx'
 
 const EyeTracking = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [scriptLoaded, setScriptLoaded] = useState(false);
-    const [showImage,setShowImage] = useState(false)
+    const [showImage,setShowImage] = useState(false);
+    const [eyeTrackingData, setEyeTrackingData] = useState<Array<any>>([]);
 
     // Handles the full screen skin lesion image 
     const fullScreenStyle = {
@@ -35,6 +37,7 @@ const EyeTracking = () => {
             if (wg) {
                 wg.setGazeListener((data, elapsedTime) => {
                     console.log(data, elapsedTime);
+                    setEyeTrackingData([...eyeTrackingData, data]);
                 }).begin()
                 .then(() => {
                     setShowImage(true); // Set to true only after WebGazer begins
@@ -48,14 +51,35 @@ const EyeTracking = () => {
     }, [scriptLoaded]); // Dependency array to ensure this runs only when scriptLoaded changes
     
     // Function to navigate back to DefaultForm
-    const navigateToDefaultForm = () => {
+    const navigateToDefaultForm = async () => {
          // Cleanup function
             if (window.webgazer) {
                 window.webgazer.end(); // Assuming webgazer provides a method to stop tracking
                 window.webgazer.stopVideo();
                 console.log("Eye tracking stopped");
             }
-        navigate('/default-form'); 
+
+            try {
+                const response = await fetch(`${HOSTNAME}/api/eyetracking`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    // Add 
+                    body: JSON.stringify(eyeTrackingData)
+                });
+                console.log("Response from server:", response);
+            
+                if (response.ok) {
+                    console.log('Eye Tracking Data submitted successfully');
+                    // Navigate back to the home page or to a success page
+                } else {
+                    console.error('Failed to submit responses');
+                }
+            } catch (error) {
+                console.error('Network error when trying to submit responses:', error);
+            }
+            navigate('/default-form');
     };
 
     return (
