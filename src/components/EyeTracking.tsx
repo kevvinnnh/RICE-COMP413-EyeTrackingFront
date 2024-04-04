@@ -59,6 +59,11 @@ const EyeTracking = () => {
                 console.log("Eye tracking stopped");
             }
 
+             // Wrap the eyeTrackingData array in an object
+            const payload = {
+                eyeData: eyeTrackingData
+            };
+
             try {
                 const response = await fetch(`${HOSTNAME}/api/eyetracking`, {
                     method: 'POST',
@@ -66,7 +71,7 @@ const EyeTracking = () => {
                         'Content-Type': 'application/json',
                     },
                     // Add 
-                    body: JSON.stringify(eyeTrackingData)
+                    body: JSON.stringify(payload)
                 });
                 console.log("Response from server:", response);
             
