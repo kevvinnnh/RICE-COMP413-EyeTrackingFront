@@ -115,7 +115,7 @@ const DefaultForm = () => {
                     <input 
                         type="number" 
                         name="age" 
-                        className="form-input mt-1 block w-full" 
+                        className="p-2.5 text-sm border-[0px] bg-gray-100 rounded-md w-full" 
                         placeholder="Enter your age"
                         value={selectedAge}
                         onChange={(e) => {
@@ -131,17 +131,16 @@ const DefaultForm = () => {
                     What is your gender?
                     <select 
                         name="gender" 
-                        className="form-select mt-1 block w-full"
+                        className="p-2.5 text-sm border-[0px] bg-gray-100 rounded-md w-full"
                         value={selectedGender}
                         onChange={(e) => {
                             setSelectedGender(e.target.value)
                         }}
                     >
-                    <option value=""></option> 
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                    <option value="preferNotToSay">Prefer not to say</option>
+                        <option value=""></option> 
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    
                     </select>
                 </label>
             </div>
@@ -152,22 +151,22 @@ const DefaultForm = () => {
                     Do you have any vision conditions?
                     <select 
                         name="vision" 
-                        className="form-select mt-1 block w-full"
+                        className="p-2.5 text-sm border-[0px] bg-gray-100 rounded-md w-full"
                         value={selectedVision}
                         onChange={(e) => {
                             setSelectedVision(e.target.value)
                         }}
                     >
-                    <option value=""></option> 
-                    <option value="no">No</option>
-                    <option value="myopia">Myopia (Nearsightedness)</option>
-                    <option value="hyperopia">Hyperopia (Farsightedness)</option>
-                    <option value="astigmatism">Astigmatism</option>
-                    <option value="presbyopia">Presbyopia</option>
-                    <option value="cataracts">Cataracts</option>
-                    <option value="glaucoma">Glaucoma</option>
-                    <option value="macularDegeneration">Macular Degeneration</option>
-                    <option value="diabeticRetinopathy">Diabetic Retinopathy</option>
+                        <option value=""></option> 
+                        <option value="no">No</option>
+                        <option value="myopia">Myopia (Nearsightedness)</option>
+                        <option value="hyperopia">Hyperopia (Farsightedness)</option>
+                        <option value="astigmatism">Astigmatism</option>
+                        <option value="presbyopia">Presbyopia</option>
+                        <option value="cataracts">Cataracts</option>
+                        <option value="glaucoma">Glaucoma</option>
+                        <option value="macularDegeneration">Macular Degeneration</option>
+                        <option value="diabeticRetinopathy">Diabetic Retinopathy</option>
                     </select>
                 </label>
             </div>
