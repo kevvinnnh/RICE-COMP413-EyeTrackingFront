@@ -159,8 +159,15 @@ const DefaultForm = () => {
                         }}
                     >
                     <option value=""></option> 
-                    <option value="yes">Yes</option>
                     <option value="no">No</option>
+                    <option value="myopia">Myopia (Nearsightedness)</option>
+                    <option value="hyperopia">Hyperopia (Farsightedness)</option>
+                    <option value="astigmatism">Astigmatism</option>
+                    <option value="presbyopia">Presbyopia</option>
+                    <option value="cataracts">Cataracts</option>
+                    <option value="glaucoma">Glaucoma</option>
+                    <option value="macularDegeneration">Macular Degeneration</option>
+                    <option value="diabeticRetinopathy">Diabetic Retinopathy</option>
                     </select>
                 </label>
             </div>
