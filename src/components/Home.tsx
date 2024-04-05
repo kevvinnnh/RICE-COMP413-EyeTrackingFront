@@ -86,17 +86,32 @@ const Home: React.FC = () => {
   const navigateToDefaultForm = () => {
     navigate('/default-form'); // Use navigate to change route
   };
+  const navigateToInvite = () => {
+    navigate('/invite'); // This is the route we will set up for inviting participants
+  };
 
   return (
     <>
+
+
       <nav className="flex justify-between items-center shadow-md p-2 mb-2">
         <h1 className="text-lg font-semibold px-2">
           EpiDerm
         </h1>
-        <button className="py-2 text-sm px-4">
-          Logout
-        </button>
+        <div>
+          <button
+            onClick={navigateToInvite}
+            className="py-2 text-sm px-4 mr-4 bg-blue-500 text-white rounded"
+          >
+            Invite Participants
+          </button>
+          <button className="py-2 text-sm px-4">
+            Logout
+          </button>
+        </div>
       </nav>
+
+      
       <div className="max-w-4xl mx-auto p-4">
         <h1 className="text-3xl font-black">
           My Forms
