@@ -37,7 +37,7 @@ const EyeTracking = () => {
             if (wg) {
                 wg.setGazeListener((data, elapsedTime) => {
                     console.log(data, elapsedTime);
-                    setEyeTrackingData([...eyeTrackingData, data]);
+                    setEyeTrackingData(prevData => [...prevData, data]);
                 }).begin()
                 .then(() => {
                     setShowImage(true); // Set to true only after WebGazer begins
@@ -63,6 +63,7 @@ const EyeTracking = () => {
             const payload = {
                 eyeData: eyeTrackingData
             };
+            console.log(payload)
 
             try {
                 const response = await fetch(`${HOSTNAME}/api/eyetracking`, {
