@@ -4,7 +4,7 @@ import EditForm from './components/EditForm';
 import DefaultForm from './components/DefaultForm';
 import SuccessPage from './components/SuccessPage';
 import EyeTracking from './components/EyeTracking';
-// import InviteParticipants from './components/InviteParticipants'; // Import InviteParticipants
+import InviteParticipants from './components/InviteParticipants'; // Import InviteParticipants
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path="/default-form" element={<DefaultForm />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/eyetracking" element={<EyeTracking />} />
-        {/* <Route path="/invite" element={<InviteParticipants />} /> Added route for InviteParticipants */}
+       <Route path="/invite" element={<InviteParticipants />} />
       </Routes>
     </Router>
   );
