@@ -80,7 +80,7 @@ const EditForm = () => {
     <>
       <nav className="flex justify-between items-center shadow-md p-2">
       <h1>
-        <a href="/" className="no-underline text-black px-2 text-lg">
+        <a href="/home" className="no-underline text-black px-2 text-lg">
           Home
         </a>
       </h1>

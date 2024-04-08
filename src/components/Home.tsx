@@ -90,6 +90,12 @@ const Home: React.FC = () => {
     navigate('/invite'); // This is the route we will set up for inviting participants
   };
 
+  const logout = () => {
+    // Clear the simulated login flag
+    localStorage.removeItem('isLoggedIn');
+    navigate('/');
+  };
+
   return (
     <>
 
@@ -103,9 +109,12 @@ const Home: React.FC = () => {
             onClick={navigateToInvite}
             className="py-2 text-sm px-4 mr-4 bg-blue-500 text-white rounded"
           >
-            Invite Participants
+          Invite Participants
           </button>
-          <button className="py-2 text-sm px-4">
+          <button
+            onClick={logout}
+            className="py-2 text-sm px-4 bg-red-500 text-white rounded"
+          >
             Logout
           </button>
         </div>
