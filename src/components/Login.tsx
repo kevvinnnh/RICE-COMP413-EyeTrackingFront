@@ -11,6 +11,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('email', email);
     navigate('/home', { replace: true }); // Use replace to prevent navigation back to login
   };
 

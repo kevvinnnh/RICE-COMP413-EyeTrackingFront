@@ -84,6 +84,8 @@ const Home: React.FC = () => {
 
   // Function to handle the button click to navigate to the prepopulated form
   const navigateToDefaultForm = () => {
+    const form_id: int = Math.floor(Math.random() * 10000000);
+    localStorage.setItem('currentFormId', form_id);
     navigate('/default-form'); // Use navigate to change route
   };
   const navigateToInvite = () => {

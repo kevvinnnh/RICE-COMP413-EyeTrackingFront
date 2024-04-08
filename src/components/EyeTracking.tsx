@@ -61,7 +61,10 @@ const EyeTracking = () => {
 
              // Wrap the eyeTrackingData array in an object
             const payload = {
-                eyeData: eyeTrackingData
+                email: localStorage.getItem('email'),
+                questionNum: location.state.question_num,
+                eyeData: eyeTrackingData,
+                formId: localStorage.getItem('currentFormId')
             };
             console.log(payload)
 
