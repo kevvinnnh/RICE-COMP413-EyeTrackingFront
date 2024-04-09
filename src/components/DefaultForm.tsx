@@ -12,6 +12,7 @@ const DefaultForm = () => {
     const [selectedAge, setSelectedAge] = useState('');
     const [selectedGender, setSelectedGender] = useState('');
     const [selectedVision, setSelectedVision] = useState('');
+    const [selectedName, setSelectedName] = useState(''); // New state for user's name
 
     const [submissionStatus, setSubmissionStatus] = useState('');
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const DefaultForm = () => {
                 // Add 
                 body: JSON.stringify({
                     ...responses, 
+                    name: selectedName, // Include the user's name in the submission
                     role: selectedRole, 
                     experienceLevel: selectedExperience, 
                     age: selectedAge, 
@@ -68,6 +70,22 @@ const DefaultForm = () => {
         <div className="max-w-4xl mx-auto p-4">
         <h1 className="text-2xl font-semibold mb-4">Welcome to our survey</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
+               {/* Name question */}
+               <div className="bg-white border-[1px] rounded-lg p-2 flex flex-col w-full">
+                <label className="text-sm font-medium text-gray-700">
+                    What is your name?
+                    <input
+                        type="text"
+                        name="name"
+                        className="p-2.5 text-sm border-[0px] bg-gray-100 rounded-md w-full"
+                        placeholder="Enter your name"
+                        value={selectedName}
+                        onChange={(e) => {
+                            setSelectedName(e.target.value)
+                        }}
+                    />
+                </label>
+            </div>
             <div className="bg-white border-[1px] rounded-lg p-2 flex flex-col w-full">
                 {/* Consistent styling with EditFormQuestion.tsx */}
                 <label className="text-sm font-medium text-gray-700">
@@ -100,10 +118,17 @@ const DefaultForm = () => {
                         }}
                     >
                     <option value=""></option> 
-                    <option value="beginner">Beginner</option>
+                    <option value="pgy1">PGY-1 (Intern Year)</option>
+                    <option value="pgy2To4">PGY-2 to PGY-4 (Dermatology Residency)</option>
+                    <option value="fellowship">Fellowship (Post-Residency)</option>
+                    <option value="boardCertified">Board Certified (Post-Residency)</option>
+                    <option value="earlyCareer">Early Career (0-5 years post-residency)</option>
+                    <option value="midCareer">Mid-Career (5-15 years post-residency)</option>
+                    <option value="senior">Senior/Advanced (Over 15 years post-residency)</option>
+                    {/* <option value="beginner">Beginner</option>
                     <option value="intermediate">Intermediate</option>
                     <option value="advanced">Advanced</option>
-                    <option value="expert">Expert</option>
+                    <option value="expert">Expert</option> */}
                     </select>
                 </label>
             </div>

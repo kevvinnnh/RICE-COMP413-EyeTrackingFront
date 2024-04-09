@@ -11,6 +11,8 @@ const EyeTracking = () => {
     const [scriptLoaded, setScriptLoaded] = useState(false);
     const [showImage,setShowImage] = useState(false);
     const [eyeTrackingData, setEyeTrackingData] = useState<Array<any>>([]);
+    const [initialTimestamp, setInitialTimestamp] = useState(0);
+    const [endTimestamp, setEndTimestamp] = useState(0);
 
     // Handles the full screen skin lesion image 
     const fullScreenStyle = {
@@ -42,6 +44,7 @@ const EyeTracking = () => {
                 .then(() => {
                     setShowImage(true); // Set to true only after WebGazer begins
                     wg.showVideo(false); // Hide the WebGazer video preview
+                    setInitialTimestamp(Date.now())
                 })
                 .catch((err) => {
                     console.error("Error starting WebGazer:", err);
@@ -58,13 +61,17 @@ const EyeTracking = () => {
                 window.webgazer.stopVideo();
                 console.log("Eye tracking stopped");
             }
-
+            
+            setEndTimestamp(Date.now());
              // Wrap the eyeTrackingData array in an object
             const payload = {
                 email: localStorage.getItem('email'),
                 questionNum: location.state.question_num,
                 eyeData: eyeTrackingData,
-                formId: localStorage.getItem('currentFormId')
+                formId: localStorage.getItem('currentFormId'),
+                initialTimestamp: initialTimestamp,
+                endTimeStamp: endTimestamp
+
             };
             console.log(payload)
 
