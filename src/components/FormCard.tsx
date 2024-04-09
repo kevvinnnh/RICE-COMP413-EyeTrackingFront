@@ -4,13 +4,6 @@ import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-const getColorFromLastChar = (char: string) => {
-    const charCode = char.charCodeAt(0);
-    const colors = ['blue-100', 'red-100', 'green-100'];
-    // return colors[charCode % colors.length];
-    return 'blue';
-  };
-
 const FormCard: React.FC<{ formID: string, formName: string }> = ({ formID, formName }) => {
   const navigate = useNavigate();
 
@@ -19,12 +12,6 @@ const FormCard: React.FC<{ formID: string, formName: string }> = ({ formID, form
   };
 
   const formTitle = formName || 'No Title';
-  const lastChar = formID.charAt(formID.length - 1);
-  const fromColor = getColorFromLastChar(lastChar);
-//   fromColor = 'green';
-
-  console.log("color:", fromColor, "id:", formID, "title:", formTitle)
-  console.log(`bg-gradient-to-tl from-${fromColor} to-gray-100`)
 
   return (
     <div

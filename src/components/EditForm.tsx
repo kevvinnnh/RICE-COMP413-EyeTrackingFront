@@ -1,5 +1,5 @@
 // src/components/EditForm.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EditFormQuestion from './EditFormQuestion';
 import { useParams } from 'react-router-dom';
 import axios, { AxiosError } from 'axios'; // Import AxiosError for type assertion
@@ -9,6 +9,7 @@ type Question = {
   id: number;
   text: string;
   type: string;
+  options?: string[]; // Add an optional options property
 };
 
 const EditForm = () => {
@@ -39,8 +40,21 @@ const EditForm = () => {
   };
 
   const saveForm = async () => {
+    const payload = {
+        title: title,
+        createdBy: "placeholder", // Add the createdBy field with a placeholder value
+        questions: questions.map(q => ({
+          ...q,
+          options: q.options || [],
+          correctAnswer: q.options && q.options.length > 0 ? q.options[0] : null, // Set correctAnswer to the first option or null
+        })),
+      };
+
+    console.log(JSON.stringify(payload, null, 2)); // Print the JSON representation to the console
+
     try {
-      const response = await axios.put(`http://127.0.0.1:5001/api/forms/${formID}`, { title });
+      // Include the `formID` in the URL
+      const response = await axios.put(`http://127.0.0.1:5001/api/forms/${formID}`, payload);
       if (response.status === 200) {
         alert('Form saved successfully');
         // Additional logic after successful save
@@ -63,6 +77,12 @@ const EditForm = () => {
     setQuestions([...questions, newQuestion]);
   };
 
+  const handleOptionsChange = (index: number, options: string[]) => {
+    const newQuestions = [...questions];
+    newQuestions[index].options = options;
+    setQuestions(newQuestions);
+  };
+
   const handleQuestionTextChange = (index: number, text: string) => {
     const newQuestions = [...questions];
     newQuestions[index].text = text;
@@ -75,6 +95,33 @@ const EditForm = () => {
     newQuestions[index].type = type;
     setQuestions(newQuestions);
   };
+
+  // Fetch form data when the component mounts
+  useEffect(() => {
+    const fetchFormData = async () => {
+        try {
+          const response = await axios.get(`http://127.0.0.1:5001/api/get_form/${formID}`);
+          if (response.status === 200 && response.data.status === 'success') {
+            const formData = response.data.form;
+            console.log('Form data:', formData);
+            setTitle(formData.formName || "Untitled Form");
+            setQuestions(formData.questions || []);
+          }
+        } catch (error) {
+          if (axios.isAxiosError(error) && error.response?.status === 404) {
+            console.error('Form not found:', error.response.data.message);
+            // Handle form not found (e.g., show notification to the user)
+          } else {
+            console.error('Error fetching form data:', error);
+            // Handle other errors (e.g., show notification to the user)
+          }
+        }
+      };
+
+    if (formID) {
+      fetchFormData();
+    }
+  }, [formID]); // Only re-run the effect if formID changes
 
   return (
     <>
@@ -118,6 +165,7 @@ const EditForm = () => {
               question={question}
               onTextChange={(text) => handleQuestionTextChange(index, text)}
               onTypeChange={(type) => handleQuestionTypeChange(index, type)}
+              onOptionsChange={(options) => handleOptionsChange(index, options)} // Pass the handler here
             />
           ))}
           <button
