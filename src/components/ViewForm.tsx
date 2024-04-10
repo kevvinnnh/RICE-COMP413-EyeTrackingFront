@@ -88,7 +88,7 @@ const ViewForm = () => {
 <div className="flex flex-col items-center w-full bg-gradient-to-tr from-gray-100 to-blue-100">
       <header className="w-full py-4 bg-white shadow-md">
         <div className="container max-w-3xl mx-auto flex justify-between items-center px-4">
-          <h1 className="text-xl font-semibold">Preview</h1>
+          <h1 className="text-xl font-medium text-gray-700">Previewing Form</h1>
           <div className='space-x-4'>
           {/* <Link to="/" className="text-blue-600 hover:text-blue-800">
             Home
@@ -100,7 +100,7 @@ const ViewForm = () => {
         </div>
       </header>
       <div className="container max-w-3xl mx-auto p-4 bg-white rounded-xl shadow my-4 overflow-y-scroll">
-          <h1 className="text-3xl font-semibold text-center mb-0">{form.title}</h1>
+          <h1 className="text-3xl font-semibold text-center mb-0">{form.formName}</h1>
           <form className=''>
             {form.questions.map((question, index) => (
               <div key={question.id} className="mb-4">

@@ -61,7 +61,7 @@ const EditForm = () => {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        alert(`Error saving form: ${error.response?.data.message || error.message}`);
+        console.error(`Error saving form: ${error.response?.data.message || error.message}`);
       } else {
         alert(`An unexpected error occurred: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
