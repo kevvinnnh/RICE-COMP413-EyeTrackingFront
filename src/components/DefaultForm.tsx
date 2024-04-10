@@ -31,13 +31,15 @@ const DefaultForm = () => {
                 // Add 
                 body: JSON.stringify({
                     ...responses, 
+                    email: localStorage.getItem('email'),
                     name: selectedName, // Include the user's name in the submission
                     role: selectedRole, 
                     experienceLevel: selectedExperience, 
                     age: selectedAge, 
                     gender: selectedGender, 
                     vision: selectedVision,
-                    formId: localStorage.getItem('currentFormId')
+                    formId: localStorage.getItem('currentFormId'),
+                    formName: localStorage.getItem('formName')
                 })
             });
             console.log("Response from server:", response);
@@ -212,7 +214,7 @@ const DefaultForm = () => {
                 <button
                     type="button"
                     className="mb-4 bg-gradient-to-tr from-green-600 to-green-400 text-white font-bold text-lg py-2 px-4 rounded transition duration-300 ease-in-out"
-                    onClick={() => navigate('/eyetracking', {state:{image:question.image}})}
+                    onClick={() => navigate('/eyetracking', {state:{image:question.image,question_num:idx+1}})}
                 >
                     Go to EyeTracking
                 </button>

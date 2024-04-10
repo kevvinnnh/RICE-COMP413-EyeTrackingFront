@@ -61,8 +61,8 @@ const EyeTracking = () => {
                 window.webgazer.stopVideo();
                 console.log("Eye tracking stopped");
             }
-            
-            setEndTimestamp(Date.now());
+            // setEndTimestamp(Date.now());
+
              // Wrap the eyeTrackingData array in an object
             const payload = {
                 email: localStorage.getItem('email'),
@@ -70,7 +70,7 @@ const EyeTracking = () => {
                 eyeData: eyeTrackingData,
                 formId: localStorage.getItem('currentFormId'),
                 initialTimestamp: initialTimestamp,
-                endTimeStamp: endTimestamp
+                endTimestamp: Date.now()
 
             };
             console.log(payload)

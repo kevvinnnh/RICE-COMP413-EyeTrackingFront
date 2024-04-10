@@ -86,6 +86,8 @@ const Home: React.FC = () => {
   const navigateToDefaultForm = () => {
     const form_id: int = Math.floor(Math.random() * 10000000);
     localStorage.setItem('currentFormId', form_id);
+    const form_name = 'Default Form'
+    localStorage.setItem('formName', form_name);
     navigate('/default-form'); // Use navigate to change route
   };
   const navigateToInvite = () => {
