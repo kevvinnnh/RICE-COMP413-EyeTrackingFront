@@ -4,6 +4,7 @@ import EditForm from './components/EditForm';
 import DefaultForm from './components/DefaultForm';
 import SuccessPage from './components/SuccessPage';
 import EyeTracking from './components/EyeTracking';
+import ViewForm from './components/ViewForm'; // Import the ViewForm component
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/edit/:formID" element={<EditForm />} />
+        <Route path="/view/:formID" element={<ViewForm />} />
         {/* ADDED the line below*/}
         <Route path="/default-form" element={<DefaultForm />} />
         <Route path="/success" element={<SuccessPage />} />

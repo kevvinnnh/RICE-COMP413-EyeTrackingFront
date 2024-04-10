@@ -68,6 +68,15 @@ const EditForm = () => {
     }
   };
 
+  const viewForm = async () => {
+    try {
+      await saveForm(); // Save the form first
+      window.location.href = `/view/${formID}`; // Redirect after saving
+    } catch (error) {
+      // Error handling is already done in saveForm
+    }
+  };
+
   const addNewQuestion = () => {
     const newQuestion = {
       id: questions.length + 1,
@@ -139,10 +148,10 @@ const EditForm = () => {
         border-gray-200 hover:border-gray-200 focus:border-blue-500 outline-none w-96"
         placeholder="Name your form"
       />
-      <section>
+      <section className=''>
         <button
             onClick={deleteForm}
-            className="py-2 text-sm px-2 text-red-600"
+            className="py-2 text-sm px-2 text-red-600 hover:underline"
         >
             Delete
         </button>
@@ -151,6 +160,12 @@ const EditForm = () => {
             className="py-2 text-sm px-2 text-green-600"
         >
             Save
+        </button>
+        <button
+        onClick={viewForm}
+        className="py-2 text-sm px-2 text-blue-600"
+        >
+            Preview
         </button>
         <button className="py-2 text-sm px-4">
             Logout
