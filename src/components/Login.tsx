@@ -1,6 +1,8 @@
 // Login.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { HOSTNAME } from '../HostName.tsx'
+
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -11,18 +13,26 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Make a GET request to verify the email and token
-    const response = await fetch(`http://localhost:5001/api/verify_invite?email=${email}&token=${password}`, {
+    // Example admin credentials (for demonstration only, not secure)
+    const isAdmin = email === 'admin@mail.com' && password === 'adminPassword';
+
+    if (isAdmin) {
+        localStorage.setItem('role', 'admin');
+        navigate('/home', { replace: true });
+        return;
+    }
+
+    // Existing login logic for participants...
+    const response = await fetch(`${HOSTNAME}/api/verify_invite?email=${email}&token=${password}`, {
         method: 'GET',
     });
 
     if (response.ok) {
-        // If the email and token are verified, proceed with the login
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('email', email);
-        navigate('/home', { replace: true }); // Use replace to prevent navigation back to login
+        localStorage.setItem('role', 'participant'); // Set role as participant
+        navigate('/home', { replace: true });
     } else {
-        // If the verification fails, alert the user
         const result = await response.json();
         alert(result.message || 'Failed to login. Please check your email and/or password.');
     }
