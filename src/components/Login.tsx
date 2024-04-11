@@ -10,10 +10,23 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('email', email);
-    navigate('/home', { replace: true }); // Use replace to prevent navigation back to login
-  };
+
+    // Make a GET request to verify the email and token
+    const response = await fetch(`http://localhost:5001/api/verify_invite?email=${email}&token=${password}`, {
+        method: 'GET',
+    });
+
+    if (response.ok) {
+        // If the email and token are verified, proceed with the login
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('email', email);
+        navigate('/home', { replace: true }); // Use replace to prevent navigation back to login
+    } else {
+        // If the verification fails, alert the user
+        const result = await response.json();
+        alert(result.message || 'Failed to login. Please check your email and/or password.');
+    }
+};
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">

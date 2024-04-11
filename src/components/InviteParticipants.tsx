@@ -1,5 +1,7 @@
 import * as React from 'react';
 import emailjs from '@emailjs/browser';
+import { HOSTNAME } from '../HostName.tsx'
+
 
 function App() {
   const [feedback, setFeedback] = React.useState('');
@@ -11,14 +13,19 @@ function App() {
   };
 
   // Function to handle sending email
-  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+  const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     const newToken = generateToken(); // Generate a new token
-
+    console.log('Generated Token:', newToken); // Debugging log
+  
+    const email = e.currentTarget.email_from.value; // Assuming your input's name attribute is 'email_from'
+    console.log('Email:', email); // Debugging log
+  
+  
     // Attempt to find an existing token input element
     const hiddenTokenInput = e.currentTarget.querySelector('input[name="token"]') as HTMLInputElement | null;
-
+  
     if (hiddenTokenInput) {
       hiddenTokenInput.value = newToken;
     } else {
@@ -28,7 +35,7 @@ function App() {
       tokenInput.value = newToken;
       e.currentTarget.appendChild(tokenInput);
     }
-
+  
     // Send the form with EmailJS
     emailjs.sendForm('service_tf822zh', 'template_jsbrfn9', e.currentTarget, 'AfSmL--5Xp1qfkypO')
       .then((result) => {
@@ -38,6 +45,34 @@ function App() {
         console.error('Failed to send email', error);
         setFeedback('Failed to send email. Please try again later.');
       });
+
+
+          // First, store the invite in the backend
+    try {
+      const storeInviteResponse = await fetch(`${HOSTNAME}/api/store_invite`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              email: email,
+              token: newToken,
+          }),
+      });
+
+      const storeInviteResult = await storeInviteResponse.json();
+
+      if (!storeInviteResponse.ok) {
+          throw new Error(storeInviteResult.error || 'Failed to store invite');
+      }
+
+      console.log('Invite Stored:', storeInviteResult); // Debugging log
+  } catch (error) {
+      console.error('Error storing invite:', error);
+      setFeedback('Failed to store invite. Please try again later.');
+      return; // Ensure we don't attempt to send an email if storing the invite failed
+  }
+  
   };
 
   return (
