@@ -1,6 +1,7 @@
 import FormCard from './FormCard';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { HOSTNAME } from '../HostName.tsx'
 
 // Define a type for the form objects
 interface Form {
@@ -84,6 +85,34 @@ const Home: React.FC = () => {
     navigate('/invite'); // This is the route we will set up for inviting participants
   };
 
+  const requestModelTraining = async () => {
+    const payload = {
+      email: localStorage.getItem('email'),
+    };
+    console.log(payload)
+
+    try {
+        const response = await fetch(`${HOSTNAME}/api/train_model`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            // Add 
+            body: JSON.stringify(payload)
+        });
+        console.log("Response from server:", response);
+    
+        if (response.ok) {
+            console.log('Model trained successfully');
+            // Navigate back to the home page or to a success page
+        } else {
+            console.error('Failed to train model');
+        }
+    } catch (error) {
+        console.error('Network error when trying to train model:', error);
+    }
+  }
+
   const logout = () => {
     // Clear the simulated login flag
     localStorage.removeItem('isLoggedIn');
@@ -136,7 +165,13 @@ const Home: React.FC = () => {
         >
           Start Default Survey
         </button>
-        {isAdmin && (
+        <button
+          onClick={requestModelTraining}
+          className="mt-4 ml-4 bg-gradient-to-tr from-green-600 to-green-400 text-white font-bold text-lg py-2 px-4 rounded transition duration-300 ease-in-out transform hover:translate-x-1 hover:shadow-lg"
+        >
+          Train Model
+        </button>
+          {isAdmin && (
           <div className="pt-4 pb-4 mb-4">
             <div className="grid grid-cols-3 gap-4">
               {/* Generate form cards based on state */}
