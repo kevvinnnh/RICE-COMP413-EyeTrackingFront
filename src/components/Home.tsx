@@ -92,7 +92,7 @@ const Home: React.FC = () => {
     console.log(payload)
 
     try {
-        const response = await fetch(`${HOSTNAME}/api/train_model`, {
+        const response = await fetch(`${HOSTNAME}/api/trainmodel`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

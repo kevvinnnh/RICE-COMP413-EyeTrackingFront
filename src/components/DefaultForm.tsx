@@ -1,5 +1,5 @@
 // DefaultForm.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HOSTNAME } from '../HostName.tsx'
 import {DEFAULT_ANSWERS} from './DefaultFormQuestion.tsx'
@@ -13,9 +13,40 @@ const DefaultForm = () => {
     const [selectedGender, setSelectedGender] = useState('');
     const [selectedVision, setSelectedVision] = useState('');
     const [selectedName, setSelectedName] = useState(''); // New state for user's name
+    const didMount = useRef(false);
 
     const [submissionStatus, setSubmissionStatus] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("formSelections") == null || didMount.current) {
+            return;
+        }
+        const previousSelections = JSON.parse(localStorage.getItem("formSelections") || "")
+        setResponses(previousSelections.responses)
+        setSelectedRole(previousSelections.selectedRole)
+        setSelectedExperience(previousSelections.selectedExperience)
+        setSelectedAge(previousSelections.selectedAge)
+        setSelectedGender(previousSelections.selectedGender)
+        setSelectedVision(previousSelections.selectedVision)
+        setSelectedName(previousSelections.selectedName)
+        didMount.current = true;
+
+    }, []);
+
+    useEffect(() => {
+        if (!didMount.current){
+            return;
+        }
+        localStorage.setItem("formSelections", JSON.stringify({responses: responses,
+            selectedRole: selectedRole,
+            selectedExperience: selectedExperience,
+            selectedAge: selectedAge,
+            selectedGender: selectedGender,
+            selectedVision: selectedVision,
+            selectedName: selectedName}))
+
+    }, [responses, selectedRole, selectedExperience, selectedAge, selectedGender, selectedVision, selectedName])
 
     // Function to handle form submission
     const handleSubmit = async (event: React.FormEvent) => {
@@ -45,6 +76,7 @@ const DefaultForm = () => {
             console.log("Response from server:", response);
         
             if (response.ok) {
+                localStorage.removeItem("formSelections");
                 console.log('Responses submitted successfully');
                 // Navigate back to the home page or to a success page
                 navigate('/success');
@@ -225,7 +257,7 @@ const DefaultForm = () => {
                     <input 
                         type="radio" 
                         name={idx.toString()} 
-                        value={answer} 
+                        value={responses[idx]} 
                         className="form-radio" 
                         onChange={() => {
                             // all_answers is a dictionary

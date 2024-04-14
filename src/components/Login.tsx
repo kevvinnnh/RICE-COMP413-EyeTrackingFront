@@ -17,6 +17,8 @@ const Login: React.FC = () => {
     const isAdmin = email === 'admin@mail.com' && password === 'adminPassword';
 
     if (isAdmin) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('email', email);
         localStorage.setItem('role', 'admin');
         navigate('/home', { replace: true });
         return;
