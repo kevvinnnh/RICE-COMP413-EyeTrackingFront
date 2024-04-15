@@ -37,7 +37,8 @@ const Home: React.FC = () => {
       } catch (error) {
         console.error('Failed to fetch forms:', error);
       }
-      setIsLoading(false);
+    //   setIsLoading(false)
+      setTimeout(() => setIsLoading(false), 200); // Wait 0.3 seconds
     };
 
     fetchForms();
@@ -125,7 +126,7 @@ const Home: React.FC = () => {
 
   const isAdmin = localStorage.getItem('role') === 'admin';
 
-  const placeholderCards = Array(5).fill(0).map((_, index) => (
+  const placeholderCards = Array(8).fill(0).map((_, index) => (
     <div key={index} className="animate-pulse flex space-x-4">
       <div className="rounded-lg h-36 w-full border-[0.5px] border-gray-300
       bg-gradient-to-tl from-blue-100 to-gray-100"></div>
