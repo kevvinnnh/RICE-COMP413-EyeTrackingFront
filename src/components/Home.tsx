@@ -22,23 +22,26 @@ const Home: React.FC = () => {
   // State to hold the fetched forms
   const [forms, setForms] = useState<Form[]>([]);
 
-  // Fetch forms from the backend when the component mounts
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const fetchForms = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch('http://127.0.0.1:5001/api/forms');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setForms(data.forms); // Update the state with the fetched forms
+        setForms(data.forms);
       } catch (error) {
         console.error('Failed to fetch forms:', error);
       }
+      setIsLoading(false);
     };
 
     fetchForms();
-  }, []); // The empty array ensures this effect runs only once after the initial render
+  }, []);
 
   // Function to handle the button click to add a new form card
   const addFormCard = async () => {
@@ -122,6 +125,13 @@ const Home: React.FC = () => {
 
   const isAdmin = localStorage.getItem('role') === 'admin';
 
+  const placeholderCards = Array(5).fill(0).map((_, index) => (
+    <div key={index} className="animate-pulse flex space-x-4">
+      <div className="rounded-lg h-36 w-full border-[0.5px] border-gray-300
+      bg-gradient-to-tl from-blue-100 to-gray-100"></div>
+    </div>
+  ));
+
   return (
     <>
       <nav className="flex justify-between items-center shadow-md p-2 mb-2">
@@ -176,7 +186,7 @@ const Home: React.FC = () => {
           <div className="pt-4 pb-4 mb-4">
             <div className="grid grid-cols-3 gap-4">
               {/* Generate form cards based on state */}
-              {forms.map((form) => (
+              {isLoading ? placeholderCards : forms.map((form) => (
                 <FormCard key={form._id.$oid} formID={form._id.$oid} formName={String(form.formName || form.formTitle)} isAdmin={isAdmin} />
               ))}
             </div>

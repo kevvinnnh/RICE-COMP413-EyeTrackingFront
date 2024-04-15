@@ -24,6 +24,8 @@ const ViewForm = () => {
   const { formID } = useParams<{ formID: string }>();
   const [form, setForm] = useState<FormResponse | null>(null);
 
+  const isAdmin = localStorage.getItem('role') === 'admin';
+
   useEffect(() => {
     const fetchForm = async () => {
       try {
@@ -93,9 +95,15 @@ const ViewForm = () => {
           {/* <Link to="/" className="text-blue-600 hover:text-blue-800">
             Home
           </Link> */}
-          <Link to={`/edit/${formID}`} className="text-blue-600 hover:text-blue-800">
-            Edit
-          </Link>
+          {localStorage.getItem('role') === 'admin' ? (
+            <Link to={`/edit/${formID}`} className="text-blue-600 hover:text-blue-800">
+              Edit
+            </Link>
+          ) : (
+            <Link to="/home" className="text-blue-600 hover:text-blue-800">
+              Home
+            </Link>
+          )}
           </div>
         </div>
       </header>
