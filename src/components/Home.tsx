@@ -131,7 +131,7 @@ const Home: React.FC = () => {
       <div className="rounded-lg h-36 w-full border-[0.5px] border-gray-300
       bg-gradient-to-tl from-blue-100 to-gray-100"></div>
     </div>
-  ));
+  )); 
 
   return (
     <>
