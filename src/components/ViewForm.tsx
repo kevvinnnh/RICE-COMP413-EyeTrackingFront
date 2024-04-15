@@ -1,5 +1,5 @@
 // src/components/ViewForm.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 
@@ -95,7 +95,7 @@ const ViewForm = () => {
           {/* <Link to="/" className="text-blue-600 hover:text-blue-800">
             Home
           </Link> */}
-          {localStorage.getItem('role') === 'admin' ? (
+          {isAdmin ? (
             <Link to={`/edit/${formID}`} className="text-blue-600 hover:text-blue-800">
               Edit
             </Link>
@@ -110,7 +110,7 @@ const ViewForm = () => {
       <div className="container max-w-3xl mx-auto p-4 bg-white rounded-xl shadow my-4 overflow-y-scroll">
           <h1 className="text-3xl font-semibold text-center mb-0">{form.formName}</h1>
           <form className=''>
-            {form.questions.map((question, index) => (
+            {form.questions.map((question) => (
               <div key={question.id} className="mb-4">
                 <hr className="my-4" />
                 <p className="mb-2 font-medium text-xl">{question.text}</p>

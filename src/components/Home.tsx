@@ -38,7 +38,7 @@ const Home: React.FC = () => {
         console.error('Failed to fetch forms:', error);
       }
     //   setIsLoading(false)
-      setTimeout(() => setIsLoading(false), 200); // Wait 0.3 seconds
+      setTimeout(() => setIsLoading(false), 300); // Wait 0.3 seconds
     };
 
     fetchForms();

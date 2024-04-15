@@ -15,7 +15,7 @@ const DefaultForm = () => {
     const [selectedName, setSelectedName] = useState(''); // New state for user's name
     const didMount = useRef(false);
 
-    const [submissionStatus, setSubmissionStatus] = useState('');
+    const [, setSubmissionStatus] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -256,6 +256,7 @@ const DefaultForm = () => {
                     <label className="inline-flex items-center">
                     <input 
                         type="radio" 
+                        key={idx.toString()+index.toString()}
                         name={idx.toString()} 
                         value={responses[idx]} 
                         className="form-radio" 

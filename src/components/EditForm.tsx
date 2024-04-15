@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import EditFormQuestion from './EditFormQuestion';
 import { useParams } from 'react-router-dom';
-import axios, { AxiosError } from 'axios'; // Import AxiosError for type assertion
+import axios from 'axios'; // Import AxiosError for type assertion
 
 // Define a type for your question
 type Question = {
