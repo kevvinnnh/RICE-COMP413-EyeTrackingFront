@@ -4,11 +4,16 @@ import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-const FormCard: React.FC<{ formID: string, formName: string }> = ({ formID, formName }) => {
+const FormCard: React.FC<{ formID: string, formName: string, isAdmin: boolean }> = ({ formID, formName, isAdmin }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/edit/${formID}`);
+    if (isAdmin) {
+      navigate(`/edit/${formID}`);
+    } else {
+      navigate(`/view/${formID}`);
+    }
+    // navigate(`/edit/${formID}`);
   };
 
   const formTitle = formName || 'No Title';

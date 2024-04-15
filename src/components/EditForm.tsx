@@ -17,6 +17,11 @@ const EditForm = () => {
   const [title, setTitle] = useState('Untitled Form');
   const [questions, setQuestions] = useState<Question[]>([]);
 
+  const isAdmin = localStorage.getItem('role') === 'admin';
+  if (!isAdmin) {
+    return <div>You are not authorized to view this page.</div>;
+  }
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };

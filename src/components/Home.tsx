@@ -80,6 +80,7 @@ const Home: React.FC = () => {
 
   const navigateToInvite = () => {
     // Only allow admin to invite participants
+    console.log("ROLE:", localStorage.getItem('role'));
     if (localStorage.getItem('role') !== 'admin') return;
 
     navigate('/invite'); // This is the route we will set up for inviting participants
@@ -165,22 +166,21 @@ const Home: React.FC = () => {
         >
           Start Default Survey
         </button>
-        <button
+        {isAdmin && (        <button
           onClick={requestModelTraining}
           className="mt-4 ml-4 bg-gradient-to-tr from-green-600 to-green-400 text-white font-bold text-lg py-2 px-4 rounded transition duration-300 ease-in-out transform hover:translate-x-1 hover:shadow-lg"
         >
           Train Model
         </button>
-          {isAdmin && (
+            )}
           <div className="pt-4 pb-4 mb-4">
             <div className="grid grid-cols-3 gap-4">
               {/* Generate form cards based on state */}
               {forms.map((form) => (
-                <FormCard key={form._id.$oid} formID={form._id.$oid} formName={String(form.formName || form.formTitle)} />
+                <FormCard key={form._id.$oid} formID={form._id.$oid} formName={String(form.formName || form.formTitle)} isAdmin={isAdmin} />
               ))}
             </div>
           </div>
-        )}
       </div>
     </>
   );
