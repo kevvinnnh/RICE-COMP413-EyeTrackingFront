@@ -68,6 +68,15 @@ const EditForm = () => {
     }
   };
 
+  const viewForm = async () => {
+    try {
+      await saveForm(); // Save the form first
+      window.location.href = `/view/${formID}`; // Redirect after saving
+    } catch (error) {
+      // Error handling is already done in saveForm
+    }
+  };
+
   const addNewQuestion = () => {
     const newQuestion = {
       id: questions.length + 1,
@@ -127,7 +136,7 @@ const EditForm = () => {
     <>
       <nav className="flex justify-between items-center shadow-md p-2">
       <h1>
-        <a href="/" className="no-underline text-black px-2 text-lg">
+        <a href="/home" className="no-underline text-black px-2 text-lg">
           Home
         </a>
       </h1>
@@ -152,6 +161,12 @@ const EditForm = () => {
         >
             Save
         </button>
+        <button
+        onClick={viewForm}
+        className="py-2 text-sm px-2 text-blue-600"
+        >
+            Preview
+        </button>
         <button className="py-2 text-sm px-4">
             Logout
         </button>
@@ -166,6 +181,7 @@ const EditForm = () => {
               onTextChange={(text) => handleQuestionTextChange(index, text)}
               onTypeChange={(type) => handleQuestionTypeChange(index, type)}
               onOptionsChange={(options) => handleOptionsChange(index, options)} // Pass the handler here
+              onImageUpload={(image) => console.log('Image uploaded:', image)} // Log the image data
             />
           ))}
           <button
