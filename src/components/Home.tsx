@@ -197,10 +197,10 @@ const Home: React.FC = () => {
             <div className="grid grid-cols-3 gap-4">
               {/* Generate form cards based on state */}
               {isLoading ? placeholderCards : forms.map((form) => (
-              // <div key={form._id.$oid} onClick={() => navigateToForm(form._id.$oid)}>
-              //     <FormCard formID={form._id.$oid} formName={String(form.formName || form.formTitle)} isAdmin={isAdmin} />
-              // </div>
-                <FormCard key={form._id.$oid} formID={form._id.$oid} formName={String(form.formName || form.formTitle)} isAdmin={isAdmin} />
+              <div key={form._id.$oid} onClick={() => navigateToForm(form._id.$oid)}>
+                  <FormCard formID={form._id.$oid} formName={String(form.formName || form.formTitle)} isAdmin={isAdmin} />
+              </div>
+                //<FormCard key={form._id.$oid} formID={form._id.$oid} formName={String(form.formName || form.formTitle)} isAdmin={isAdmin} />
               ))}
             </div>
           </div>
