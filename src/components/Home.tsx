@@ -99,6 +99,12 @@ const Home: React.FC = () => {
     navigate('/invite'); // This is the route we will set up for inviting participants
   };
 
+  const navigateToDashboard = () => {
+    if (localStorage.getItem('role') !== 'admin') return;
+    navigate('/dashboard');
+  };
+
+
   const requestModelTraining = async () => {
     const payload = {
       email: localStorage.getItem('email'),
@@ -155,6 +161,12 @@ const Home: React.FC = () => {
               className="py-2 text-sm px-4 mr-4 bg-blue-500 text-white rounded"
             >
             Invite Participants
+            </button>
+            <button
+              onClick={navigateToDashboard} // Add this line
+              className="py-2 text-sm px-4 mr-4 bg-blue-500 text-white rounded" // Use the same style as the Invite Participants button
+            >
+            Dashboard
             </button>
           </div>
         )}

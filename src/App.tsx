@@ -7,6 +7,8 @@ import SuccessPage from './components/SuccessPage';
 import EyeTracking from './components/EyeTracking';
 import ViewForm from './components/ViewForm';
 import InviteParticipants from './components/InviteParticipants'; // Import InviteParticipants
+import Dashboard from './components/Dashboard'; // Import InviteParticipants
+
 
 function App() {
   // This example uses localStorage to check if the user is logged in
@@ -23,6 +25,7 @@ function App() {
         <Route path="/view/:formID" element={<ViewForm />} />
         <Route path="/eyetracking" element={<EyeTracking />} />
        <Route path="/invite" element={<InviteParticipants />} />
+       <Route path="/dashboard" element={<Dashboard />} /> 
       </Routes>
     </Router>
   );
