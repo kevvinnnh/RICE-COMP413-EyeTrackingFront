@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { HOSTNAME } from '../HostName';
 
+// Define interfaces for typing the state related to surveys, participants, and responses
+
 interface Survey {
     _id: string;
     formName: string;
@@ -18,12 +20,14 @@ interface Response {
 }
 
 const Dashboard = () => {
+    // State for storing surveys, the selected survey, participants, selected participant, and responses
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [selectedSurvey, setSelectedSurvey] = useState<Survey | null>(null);
     const [participants, setParticipants] = useState<Participant[]>([]);
     const [selectedParticipant, setSelectedParticipant] = useState<Participant | null>(null);
     const [responses, setResponses] = useState<Response[]>([]);
-
+    
+    // Effect to fetch surveys from the server when the component mounts
     useEffect(() => {
         const fetchSurveys = async () => {
             try {
@@ -41,6 +45,7 @@ const Dashboard = () => {
         fetchSurveys();
     }, []);
 
+    // Redering cnentompo
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
