@@ -14,7 +14,7 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     // Example admin credentials (for demonstration only, not secure)
-    const isAdmin = email === 'admin@mail.com' && password === 'adminPassword';
+    const isAdmin = email === 'admin@mail.com' && password === 'pass';
 
     if (isAdmin) {
         localStorage.setItem('isLoggedIn', 'true');

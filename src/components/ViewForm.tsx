@@ -179,7 +179,7 @@ const ViewForm = () => {
           <div className="container max-w-3xl mx-auto p-4 bg-white rounded-xl shadow my-4 overflow-y-scroll">
               <h1 className="text-3xl font-semibold text-center mb-0">{form.formName}</h1>
               <form className=''>
-              {console.log('Form questions:', form.questions)}
+              {/* {console.log('Form questions:', form.questions)} */}
                 {form.questions.map((question) => (
                   <div key={question.id} className="mb-4">
                     <hr className="my-4" />

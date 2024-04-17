@@ -1,42 +1,42 @@
 
 // src/components/EditFormQuestion.tsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 interface EditFormQuestionProps {
-  question: { id: number; text: string; type: string; options?: string[] };
+  question: { id: number; text: string; type: string; options?: string[]; imageUrl?: string; };
   onTextChange: (text: string) => void;
   onTypeChange: (type: string) => void;
   onOptionsChange?: (options: string[]) => void; // Add this line
-  onImageUpload: (image: File) => void;
+  onImageUrlChange: (imageUrl: string) => void;
+//   onImageUpload: (image: File) => void;
 }
 
-const EditFormQuestion: React.FC<EditFormQuestionProps> = ({ question, onTextChange, onTypeChange, onOptionsChange, onImageUpload }) => {
-    const [image, setImage] = useState<File | null>(null);
+const EditFormQuestion: React.FC<EditFormQuestionProps> = ({ question, onTextChange, onTypeChange, onOptionsChange, onImageUrlChange }) => {
+    // const [image, setImage] = useState<File | null>(null);
+    const [imageUrl, setImageUrl] = useState<string>(question.imageUrl || ''); // Set initial state to the passed imageUrl
   
 
-    const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        const file = e.target.files[0];
-        console.log(file);
-        setImage(file);
-        onImageUpload(file); // Lifting the state up if needed
-      }
-    };
+  // Replace handleImage with handleImageUrl
+  const handleImageUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setImageUrl(url);
+    onImageUrlChange(url);
+  };
     
-    const handleApi = () => {
-      if (image) {
-        const formData = new FormData();
-        formData.append('image', image);
+    // const handleApi = () => {
+    //   if (image) {
+    //     const formData = new FormData();
+    //     formData.append('image', image);
     
-        // Directly using axios here
-        axios.post('url', formData).then((res) => {
-          console.log(res);
-        }).catch((error) => {
-          console.error(error);
-        });
-      }
-    };
+    //     // Directly using axios here
+    //     axios.post('url', formData).then((res) => {
+    //       console.log(res);
+    //     }).catch((error) => {
+    //       console.error(error);
+    //     });
+    //   }
+    // };
     
     const [options, setOptions] = useState<string[]>(question.options || []);
     
@@ -108,27 +108,21 @@ const EditFormQuestion: React.FC<EditFormQuestionProps> = ({ question, onTextCha
         </div>
   
         )}  {/* Image upload section */}
-      <div className="mb-4">
-        <label htmlFor="imageUpload" className="text-sm font-medium text-gray-400">
-          Upload Image
-        </label>
-        <input
-          id="imageUpload"
-          type="file"
-          name="image"
-          onChange={handleImage}
-          className="text-sm w-full p-2 bg-gray-100 border-[2px] rounded-md border-gray-100 hover:border-gray-200
-          focus:border-blue-500 focus:bg-gray-100 outline-none transition duration-300 ease-in-out"
-        />
-        <button
-          onClick={handleApi}
-          className="mt-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-        >
-          Submit Image
-        </button>
-      </div>
-      {/* ... rest of the component */}
+    <div className="mt-4">
+      <label htmlFor="imageUrl" className="text-sm font-medium text-gray-400">
+        Image URL
+      </label>
+      <input
+        id="imageUrl"
+        type="text"
+        value={imageUrl}
+        onChange={handleImageUrl}
+        className="text-sm w-full p-2 bg-gray-100 border-[2px] rounded-md border-gray-100 hover:border-gray-200
+        focus:border-blue-500 focus:bg-gray-100 outline-none transition duration-300 ease-in-out"
+        placeholder="Enter image URL"
+      />
     </div>
+      </div>
   );
 };
 

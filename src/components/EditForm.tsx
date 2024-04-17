@@ -10,6 +10,7 @@ type Question = {
   text: string;
   type: string;
   options?: string[]; // Add an optional options property
+  imageUrl?: string; // Add an optional imageUrl property
 };
 
 const EditForm = () => {
@@ -24,6 +25,12 @@ const EditForm = () => {
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
+  };
+
+  const handleImageUrlChange = (index: number, imageUrl: string) => {
+    const newQuestions = [...questions];
+    newQuestions[index].imageUrl = imageUrl; // Assuming you add an imageUrl property to your Question type
+    setQuestions(newQuestions);
   };
 
   const deleteForm = async () => {
@@ -186,7 +193,7 @@ const EditForm = () => {
               onTextChange={(text) => handleQuestionTextChange(index, text)}
               onTypeChange={(type) => handleQuestionTypeChange(index, type)}
               onOptionsChange={(options) => handleOptionsChange(index, options)} // Pass the handler here
-              onImageUpload={(image) => console.log('Image uploaded:', image)} // Log the image data
+              onImageUrlChange={(imageUrl) => handleImageUrlChange(index, imageUrl)}
             />
           ))}
           <button
