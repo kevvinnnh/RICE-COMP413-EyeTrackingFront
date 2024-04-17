@@ -82,6 +82,15 @@ const Home: React.FC = () => {
     navigate('/default-form'); // Use navigate to change route
   };
 
+
+  // Function to handle navigation to the selected form
+  // const navigateToForm = (formID: string) => {
+  //   localStorage.setItem('currentFormId', formID);
+  //    // fix the input to navigate below
+  //   navigate('/view/:formID');
+  // };
+
+
   const navigateToInvite = () => {
     // Only allow admin to invite participants
     console.log("ROLE:", localStorage.getItem('role'));
@@ -102,11 +111,11 @@ const Home: React.FC = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            // Add 
+            // Add
             body: JSON.stringify(payload)
         });
         console.log("Response from server:", response);
-    
+
         if (response.ok) {
             console.log('Model trained successfully');
             // Navigate back to the home page or to a success page
@@ -131,7 +140,7 @@ const Home: React.FC = () => {
       <div className="rounded-lg h-36 w-full border-[0.5px] border-gray-300
       bg-gradient-to-tl from-blue-100 to-gray-100"></div>
     </div>
-  )); 
+  ));
 
   return (
     <>
@@ -188,6 +197,9 @@ const Home: React.FC = () => {
             <div className="grid grid-cols-3 gap-4">
               {/* Generate form cards based on state */}
               {isLoading ? placeholderCards : forms.map((form) => (
+              // <div key={form._id.$oid} onClick={() => navigateToForm(form._id.$oid)}>
+              //     <FormCard formID={form._id.$oid} formName={String(form.formName || form.formTitle)} isAdmin={isAdmin} />
+              // </div>
                 <FormCard key={form._id.$oid} formID={form._id.$oid} formName={String(form.formName || form.formTitle)} isAdmin={isAdmin} />
               ))}
             </div>
@@ -196,5 +208,5 @@ const Home: React.FC = () => {
     </>
   );
 }
-  
+
   export default Home;

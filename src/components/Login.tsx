@@ -23,7 +23,6 @@ const Login: React.FC = () => {
         navigate('/home', { replace: true });
         return;
     }
-
     // Existing login logic for participants...
     const response = await fetch(`${HOSTNAME}/api/verify_invite?email=${email}&token=${password}`, {
         method: 'GET',

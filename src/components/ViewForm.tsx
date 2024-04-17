@@ -1,7 +1,7 @@
-// src/components/ViewForm.tsx
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { HOSTNAME } from '../HostName'; // Ensure you import the HOSTNAME from the correct path
 
 type Question = {
   id: number;
@@ -11,7 +11,7 @@ type Question = {
   correctAnswer?: string | null;
 };
 
-type FormResponse = {
+type FormData = {
   _id: string;
   createdBy: string;
   dateCreated: string;
@@ -20,74 +20,152 @@ type FormResponse = {
   title: string;
 };
 
+type UserResponse = {
+  _id: string;
+  user_id: string;
+  form_id: string;
+  role: string;
+  years_of_experience: number;
+  age: number;
+  gender: string;
+  vision_impairment: string[];
+  correctness_score: number;
+  // eye_tracking_data: EyeTrackingData[]; // Assuming eye_tracking_data is an array of EyeTrackingData objects
+  responses: UserAnswer[];
+}
+
+type UserAnswer = {
+  questionId: number;
+  answer: string;
+}
+
+
+// this sets up the initial state and prepare the component to fetch form data based on the formID
+// parameter from the URL
 const ViewForm = () => {
+  // double check if we need to specify if formID is a number/string
   const { formID } = useParams<{ formID: string }>();
-  const [form, setForm] = useState<FormResponse | null>(null);
+  const [selectedForm, setForm] = useState<FormData | null>(null);
+  const [title, setTitle] = useState('Untitled Form');
+  const [questions, setQuestions] = useState<Question[]>([]);
 
+
+
+  // figure out if we need this info
+  const [responses, setResponses] = useState<any>({});
+  const [selectedRole, setSelectedRole] = useState('');
+  const [selectedExperience, setSelectedExperience] = useState('');
+  const [selectedAge, setSelectedAge] = useState('');
+  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedVision, setSelectedVision] = useState('');
+  const [selectedName, setSelectedName] = useState(''); // New state for user's name
+  const didMount = useRef(false);
+
+  const [, setSubmissionStatus] = useState('');
+  const navigate = useNavigate();
+
+  // verify that admin shouldn't be able to submit forms
   const isAdmin = localStorage.getItem('role') === 'admin';
+  if (!isAdmin) {
+    return <div>You are not authorized to view this page.</div>;
+  }
 
+// figure out if we need to get anything from local storage
+
+//   useEffect(() => {
+//     if (localStorage.getItem("formSelections") == null || didMount.current) {
+//         return;
+//     }
+//     const previousSelections = JSON.parse(localStorage.getItem("formSelections") || "")
+//     setResponses(previousSelections.responses)
+//     setSelectedRole(previousSelections.selectedRole)
+//     setSelectedExperience(previousSelections.selectedExperience)
+//     setSelectedAge(previousSelections.selectedAge)
+//     setSelectedGender(previousSelections.selectedGender)
+//     setSelectedVision(previousSelections.selectedVision)
+//     setSelectedName(previousSelections.selectedName)
+//     setForm(previousSelections.selectedForm)
+//     didMount.current = true;
+
+// }, []);
+
+// useEffect(() => {
+//   if (!didMount.current){
+//       return;
+//   }
+//   localStorage.setItem("formSelections", JSON.stringify({responses: responses,
+//       selectedRole: selectedRole,
+//       selectedExperience: selectedExperience,
+//       selectedAge: selectedAge,
+//       selectedGender: selectedGender,
+//       selectedVision: selectedVision,
+//       selectedName: selectedName,
+//       selectedForm: selectedForm}))
+
+// }, [responses, selectedRole, selectedExperience, selectedAge, selectedGender, selectedVision, selectedName, selectedForm])
+
+
+  // the useEffect is responsible for fetching form data from the backend when the formID changes
   useEffect(() => {
-    const fetchForm = async () => {
-      try {
-        const response = await axios.get(`http://127.0.0.1:5001/api/get_form/${formID}`);
-        if (response.status === 200 && response.data && response.data.status === 'success') {
-          setForm(response.data.form); // Set the nested 'form' object to state
+    const fetchFormData = async () => {
+        try {
+          const response = await axios.get(`http://127.0.0.1:5001/api/get_form/${formID}`);
+          if (response.status === 200 && response.data.status === 'success') {
+            const formData = response.data.form;
+            console.log('Form data:', formData);
+            setTitle(formData.formName || "Untitled Form");
+            setQuestions(formData.questions || []);
+          }
+        } catch (error) {
+          if (axios.isAxiosError(error) && error.response?.status === 404) {
+            console.error('Form not found:', error.response.data.message);
+            // Handle form not found (e.g., show notification to the user)
+          } else {
+            console.error('Error fetching form data:', error);
+            // Handle other errors (e.g., show notification to the user)
+          }
         }
-      } catch (error) {
-        console.error('Error fetching form:', error);
-        // Handle error (e.g., show notification to the user)
-      }
-    };
-  
-    fetchForm();
-  }, [formID]);
-  
-    const renderQuestionInput = (question: Question) => {
-      switch (question.type) {
-        case 'multipleChoice':
-        case 'trueFalse':
-          return (
-            <div className="flex flex-col">
-              {Array.isArray(question.options) && question.options.map((option, index) => (
-                <label key={index} className="inline-flex items-center mt-1">
-                  <input type="radio" name={`question_${question.id}`} value={option} className="mr-2" />
-                  {option}
-                </label>
-              ))}
-            </div>
-          );
-        case 'checkboxes':
-          return (
-            <div className="flex flex-col">
-              {Array.isArray(question.options) && question.options.map((option, index) => (
-                <label key={index} className="inline-flex items-center mt-1">
-                  <input type="checkbox" name={`question_${question.id}`} value={option} className="mr-2" />
-                  {option}
-                </label>
-              ))}
-            </div>
-          );
-        case 'short':
-        case 'long':
-          return (
-            <input
-              type="text"
-              name={`question_${question.id}`}
-              placeholder={question.type === 'short' ? 'Short answer' : 'Long answer'}
-              className="w-full p-2 border rounded"
-            />
-          );
-        default:
-          return null;
-      }
-    };
-  
-    if (!form) {
-      return <div>Loading...</div>;
+      };
+
+    if (formID) {
+      fetchFormData();
     }
-  
-    return (
-<div className="flex flex-col items-center w-full bg-gradient-to-tr from-gray-100 to-blue-100">
+  }, [formID]); // Only re-run the effect if formID changes
+
+  // create function for detecting them filling in answers
+  const handleInputChange = (questionId: number, value: string) => {
+    // this handles
+    setResponses({ ...FormData, [questionId]: value });
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      // fix this
+      const response = await axios.post(`${HOSTNAME}/api/responses`, {
+        formID,
+        responses: FormData,
+        // Include additional data if needed (e.g., user info)
+      });
+      if (response.status === 200 && response.data && response.data.status === 'success') {
+        // Handle success, maybe redirect to a success page
+        history.push('/success');
+      } else {
+        // Handle failure
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Handle error
+    }
+  };
+
+
+  if (!form) {
+    return <div>Loading...</div>;
+  }
+  // fix this 
+  return (
+    <div className="flex flex-col items-center w-full bg-gradient-to-tr from-gray-100 to-blue-100">
       <header className="w-full py-4 bg-white shadow-md">
         <div className="container max-w-3xl mx-auto flex justify-between items-center px-4">
           <h1 className="text-xl font-medium text-gray-700">Previewing Form</h1>
@@ -125,5 +203,10 @@ const ViewForm = () => {
       </div>
     );
   };
-  
-  export default ViewForm;
+
+  );
+;
+
+export default ViewForm;
+
+
