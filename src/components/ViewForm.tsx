@@ -21,12 +21,15 @@ type FormData = {
 };
 
 type UserResponse = {
-  _id: string;
+  //_id: string;
+  email: string;
+  name: string;
   user_id: string;
   form_id: string;
+  form_name: string;
   role: string;
-  years_of_experience: number;
-  age: number;
+  years_of_experience: string;
+  age: string;
   gender: string;
   vision_impairment: string[];
   correctness_score: number;
@@ -55,8 +58,8 @@ const ViewForm = () => {
   const [, setSubmissionStatus] = useState('');
   const isAdmin = localStorage.getItem('role') === 'admin';
 //eye trackingbutton
-  const handleEyeTrackingButtonClick = (image: string, questionNum: number) => {
-    navigate('/eyetracking', { state: { image, questionNum } });
+  // const handleEyeTrackingButtonClick = (image: string, questionNum: number) => {
+  //   navigate('/eyetracking', { state: { image, questionNum } });
 
   useEffect(() => {
     if (localStorage.getItem("formSelections") == null || didMount.current) {
@@ -117,47 +120,6 @@ const ViewForm = () => {
   };
 
 
-  // const handleSubmit = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-  //   try {
-  //     const userResponses: UserAnswer[] = buildUserResponses(); // Build user responses array
-
-  //     const userResponse: UserResponse = {
-  //       _id: '', // Replace with appropriate ID if needed
-  //       user_id: localStorage.getItem('user_id') || '', // Get user ID from local storage
-  //       form_id: localStorage.getItem('currentFormId') || '', // Get form ID from local storage
-  //       role: selectedRole,
-  //       years_of_experience: Number(selectedExperience),
-  //       age: Number(selectedAge),
-  //       gender: selectedGender,
-  //       vision_impairment: selectedVision.split(','), // Assuming selectedVision is a comma-separated string
-  //       correctness_score: 0, // You may need to calculate this based on user responses
-  //       responses: userResponses,
-  //     };
-
-  //     const response = await fetch(`${HOSTNAME}/api/submit_response`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(userResponse),
-  //     });
-
-  //     if (response.ok) {
-  //       localStorage.removeItem("formSelections");
-  //       console.log('Responses submitted successfully');
-  //       navigate('/success');
-  //       setSubmissionStatus('success');
-  //     } else {
-  //       console.error('Failed to submit responses');
-  //       setSubmissionStatus('failure');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error submitting form:', error);
-  //   }
-  // };
-
-
   const renderQuestionInput = (question: Question) => {
     switch (question.type) {
       case 'multipleChoice':
@@ -211,42 +173,6 @@ const ViewForm = () => {
     }
   };
 
-  // const handleSubmit = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-  //   try {
-  //     const response = await fetch(`${HOSTNAME}/api/get_responses`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         ...responses,
-  //         email: localStorage.getItem('email'),
-  //         name: selectedName,
-  //         role: selectedRole,
-  //         experienceLevel: selectedExperience,
-  //         age: selectedAge,
-  //         gender: selectedGender,
-  //         vision: selectedVision,
-  //         formId: localStorage.getItem('currentFormId'),
-  //         formName: localStorage.getItem('formName')
-  //       })
-  //     });
-
-  //     if (response.ok) {
-  //       localStorage.removeItem("formSelections");
-  //       console.log('Responses submitted successfully');
-  //       navigate('/success');
-  //       setSubmissionStatus('success');
-  //     } else {
-  //       console.error('Failed to submit responses');
-  //       setSubmissionStatus('failure');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error submitting form:', error);
-  //     setSubmissionStatus('failure');
-  //   }
-  // };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -254,12 +180,15 @@ const ViewForm = () => {
       const userResponses: UserAnswer[] = buildUserResponses(); // Build user responses array
 
       const userResponse: UserResponse = {
-        _id: '', // Replace with appropriate ID if needed
+        //_id: '', // Replace with appropriate ID if needed
         user_id: localStorage.getItem('user_id') || '', // Get user ID from local storage
         form_id: localStorage.getItem('currentFormId') || '', // Get form ID from local storage
+        email: localStorage.getItem('email')|| '',
+        name: selectedName,
+        form_name: localStorage.getItem('formName') || '',
         role: selectedRole,
-        years_of_experience: Number(selectedExperience),
-        age: Number(selectedAge),
+        years_of_experience: selectedExperience,
+        age: selectedAge,
         gender: selectedGender,
         vision_impairment: selectedVision.split(','), // Assuming selectedVision is a comma-separated string
         correctness_score: 0, // You may need to calculate this based on user responses
@@ -273,8 +202,11 @@ const ViewForm = () => {
         },
         body: JSON.stringify(userResponse),
       });
+      console.log("Response from server:", response);
 
       if (response.ok) {
+        const responseData = await response.json();
+        console.log("Response from server:", responseData);
         localStorage.removeItem("formSelections");
         console.log('Responses submitted successfully');
         navigate('/success');
