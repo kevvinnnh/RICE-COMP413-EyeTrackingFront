@@ -11,6 +11,7 @@ const FormCard: React.FC<{ formID: string, formName: string, isAdmin: boolean }>
     if (isAdmin) {
       navigate(`/edit/${formID}`);
     } else {
+      localStorage.setItem('formName',formName);
       navigate(`/view/${formID}`);
     }
     // navigate(`/edit/${formID}`);

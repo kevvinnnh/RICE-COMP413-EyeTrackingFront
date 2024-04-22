@@ -14,6 +14,7 @@
     "axios": "^1.6.8",
     "heatmap.js": "^2.0.5",
     "mongoose": "^8.2.0",
+    "node": "^18.20.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-load-script": "^0.0.6",
