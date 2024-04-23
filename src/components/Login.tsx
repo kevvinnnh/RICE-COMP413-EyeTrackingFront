@@ -15,7 +15,7 @@ const Login: React.FC = () => {
 
     // Example admin credentials (for demonstration only, not secure)
     const isAdmin = email === 'admin@mail.com' && password === 'pass';
-
+    console.log(isAdmin)
     if (isAdmin) {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('email', email);
@@ -27,7 +27,7 @@ const Login: React.FC = () => {
     const response = await fetch(`${HOSTNAME}/api/verify_invite?email=${email}&token=${password}`, {
         method: 'GET',
     });
-
+    console.log(response.ok)
     if (response.ok) {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('email', email);

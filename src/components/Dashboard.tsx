@@ -9,9 +9,9 @@ interface Survey {
 }
 
 interface Participant {
-    userId: string;
     name: string;
     email: string;
+    predicted_experience: string;
 }
 
 interface Response {
@@ -34,6 +34,7 @@ const Dashboard = () => {
                 const response = await fetch(`${HOSTNAME}/api/forms`);
                 if (response.ok) {
                     const data = await response.json();
+                    data.forms.push({_id: 0, formName: "Default Form"})
                     setSurveys(data.forms);
                 } else {
                     throw new Error('Failed to fetch surveys');
@@ -44,6 +45,23 @@ const Dashboard = () => {
         };
         fetchSurveys();
     }, []);
+
+    useEffect(() => {
+        const fetchParticipants = async () => {
+            try {
+                const response = await fetch(`${HOSTNAME}/api/get_participants/${selectedSurvey?.formName}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setParticipants(data.participants)
+                } else {
+                    throw new Error('Failed to fetch surveys');
+                }
+            } catch (error) {
+                console.error('Error fetching surveys', error);
+            }
+        };
+        fetchParticipants();
+    }, [selectedSurvey]);
 
     // Redering cnentompo
     return (
@@ -70,11 +88,11 @@ const Dashboard = () => {
                         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                             {participants.map(participant => (
                                 <button 
-                                    key={participant.userId} 
+                                    key={participant.name} 
                                     onClick={() => setSelectedParticipant(participant)}
                                     className="px-6 py-3 bg-green-500 rounded-md text-white font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                                 >
-                                    {participant.name}
+                                    {participant.name}, {participant.email}, {participant.predicted_experience}
                                 </button>
                             ))}
                         </div>
