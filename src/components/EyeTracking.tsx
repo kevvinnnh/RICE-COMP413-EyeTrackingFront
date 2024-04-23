@@ -14,7 +14,7 @@ const EyeTracking = () => {
     const [initialTimestamp, setInitialTimestamp] = useState(0);
     const [endTimestamp, setEndTimestamp] = useState(0);
 
-    // Handles the full screen skin lesion image 
+    // Handles the full screen skin lesion image
     const fullScreenStyle = {
         position: 'fixed',
         top: 0,
@@ -35,7 +35,7 @@ const EyeTracking = () => {
         if (scriptLoaded) {
             // Ensure webgazer is available in the global scope
             const wg = window.webgazer || webgazer;
-            
+
             if (wg) {
                 wg.setGazeListener((data, elapsedTime) => {
                     console.log(data, elapsedTime);
@@ -49,10 +49,10 @@ const EyeTracking = () => {
                 .catch((err) => {
                     console.error("Error starting WebGazer:", err);
                 });
-            } 
+            }
         }
     }, [scriptLoaded]); // Dependency array to ensure this runs only when scriptLoaded changes
-    
+
     // Function to navigate back to DefaultForm
     const navigateToDefaultForm = async () => {
          // Cleanup function
@@ -82,11 +82,11 @@ const EyeTracking = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    // Add 
+                    // Add
                     body: JSON.stringify(payload)
                 });
                 console.log("Response from server:", response);
-            
+
                 if (response.ok) {
                     console.log('Eye Tracking Data submitted successfully');
                     // Navigate back to the home page or to a success page
@@ -99,24 +99,72 @@ const EyeTracking = () => {
             navigate('/default-form');
     };
 
+    // Function to navigate back to DefaultForm
+    const navigateToSelectedForm = async (formID: string) => {
+        // Cleanup function
+           if (window.webgazer) {
+               window.webgazer.end(); // Assuming webgazer provides a method to stop tracking
+               window.webgazer.stopVideo();
+               console.log("Eye tracking stopped");
+           }
+           // setEndTimestamp(Date.now());
+
+            // Wrap the eyeTrackingData array in an object
+           const payload = {
+               email: localStorage.getItem('email'),
+               formName: localStorage.getItem('formName'),
+               questionNum: location.state.question_num,
+               eyeData: eyeTrackingData,
+               formId: localStorage.getItem('currentFormId'),
+               initialTimestamp: initialTimestamp,
+               endTimestamp: Date.now()
+
+           };
+           console.log(payload)
+
+           try {
+               const response = await fetch(`${HOSTNAME}/api/eyetracking`, {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type': 'application/json',
+                   },
+                   // Add
+                   body: JSON.stringify(payload)
+               });
+               console.log("Response from server:", response);
+
+               if (response.ok) {
+                   console.log('Eye Tracking Data submitted successfully');
+                   // Navigate back to the home page or to a success page
+               } else {
+                   console.error('Failed to submit responses');
+               }
+           } catch (error) {
+               console.error('Network error when trying to submit responses:', error);
+           }
+           navigate(`/view/${formID}`);
+   };
+
+
     return (
         <div>
             <Script
                 url="https://webgazer.cs.brown.edu/webgazer.js"
-                onLoad={handleScriptLoad} 
+                onLoad={handleScriptLoad}
             />
             {showImage&&<img
-                // Replace with your path to image file 
+                // Replace with your path to image file
                 src={location.state.image}
                 // className="my-4"
                 style={fullScreenStyle}
-                
+
         />}
             {/* Button to navigate back to DefaultForm */}
-            <button 
-                onClick={navigateToDefaultForm} 
+            <button
+                // onClick={() => navigateToSelectedForm(location.state.formID)} // Call navigateToSelectedForm with the formID
+                onClick={navigateToDefaultForm}
                 className="mt-4 ml-4 bg-gradient-to-tr from-green-600 to-green-400 text-white font-bold text-lg py-2 px-4 rounded transition duration-300 ease-in-out transform hover:translate-x-1 hover:shadow-lg absolute top-0 right-0"
-                
+
             >
                 Back to Survey
             </button>

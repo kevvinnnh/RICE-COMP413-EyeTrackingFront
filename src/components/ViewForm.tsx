@@ -57,15 +57,16 @@ const ViewForm = () => {
   const navigate = useNavigate();
   const [, setSubmissionStatus] = useState('');
   const isAdmin = localStorage.getItem('role') === 'admin';
-//eye trackingbutton
-  // const handleEyeTrackingButtonClick = (image: string, questionNum: number) => {
-  //   navigate('/eyetracking', { state: { image, questionNum } });
+
 
   useEffect(() => {
+    console.log("Fetching form responses from local storage...");
     if (localStorage.getItem("formSelections") == null || didMount.current) {
+      console.log("No form responses found in local storage or component already mounted.");
       return;
     }
     const previousSelections = JSON.parse(localStorage.getItem("formSelections") || "");
+    console.log("Previous form responses:", previousSelections);
     setResponses(previousSelections.responses);
     setSelectedRole(previousSelections.selectedRole);
     setSelectedExperience(previousSelections.selectedExperience);
@@ -75,6 +76,22 @@ const ViewForm = () => {
     setSelectedName(previousSelections.selectedName);
     didMount.current = true;
   }, []);
+
+  useEffect(() => {
+    if (!didMount.current){
+        return;
+    }
+    console.log("Setting form responses in local storage")
+    localStorage.setItem("formSelections", JSON.stringify({responses: responses,
+        selectedRole: selectedRole,
+        selectedExperience: selectedExperience,
+        selectedAge: selectedAge,
+        selectedGender: selectedGender,
+        selectedVision: selectedVision,
+        selectedName: selectedName}))
+
+}, [responses, selectedRole, selectedExperience, selectedAge, selectedGender, selectedVision, selectedName])
+
 
   useEffect(() => {
     const fetchFormData = async () => {
@@ -173,11 +190,17 @@ const ViewForm = () => {
     }
   };
 
+  const handleEyeTrackingButtonClick = (formID: string, image: string, questionNum: number) => {
+        navigate('/eyetracking', { state: { formID, image, questionNum } });}
+
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       const userResponses: UserAnswer[] = buildUserResponses(); // Build user responses array
+
+    // Store responses in local storage
+    localStorage.setItem("formSelections", JSON.stringify(userResponses));
 
       const userResponse: UserResponse = {
         //_id: '', // Replace with appropriate ID if needed
@@ -371,6 +394,16 @@ const ViewForm = () => {
               <p className="mb-2 font-medium text-xl">{question.text}</p>
               {/* Render different question input types */}
               {renderQuestionInput(question)}
+              {/* Button to navigate to EyeTracking */}
+              {/* Eye tracking button */}
+              <button
+                type="button"
+                onClick={() => handleEyeTrackingButtonClick(formID, question.text, question.id)}
+                className="bg-blue-500 text-white px-3 py-1 rounded-lg mt-2"
+              >
+                Start Eye Tracking
+              </button>
+              
             </div>
           ))}
           <button type="submit" className="w-full mt-4 bg-blue-100 hover:bg-blue-200 font-bold py-2 px-4 rounded-lg border-[2px] border-blue-500 text-blue-700 ease-linear duration-100">
