@@ -20,6 +20,7 @@ const DefaultForm = () => {
 
     useEffect(() => {
         if (localStorage.getItem("formSelections") == null || didMount.current) {
+            didMount.current = true;
             return;
         }
         const previousSelections = JSON.parse(localStorage.getItem("formSelections") || "")
